@@ -20,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'viu53jj296c1n)@^+!otd^lm!n&af20m5w$_oxe*(1k*alt424'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', True)
+TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['*']
 
 TEMPLATE_DEBUG = True
 
@@ -67,7 +70,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
@@ -80,3 +83,48 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+APPEND_SLASH = False
+
+PROJECT_ROOT = os.path.dirname(__file__)
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, "templates"),
+)
+
+INTERNAL_APPS = [
+    'app'
+]
+
+EXTERNAL_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'south',
+    'tastypie',
+]
+
+# Static asset configuration
+STATIC_ROOT = "staticfiles"
+
+if DEBUG:
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/static_serve/')
+
+STATIC_URL = os.environ.get("DJANGO_STATIC_URL", "/static/")
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
