@@ -33,12 +33,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +64,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('MVP_DB_NAME', 'freesage_db'),
-        'USER': os.envirom.get('POSTGRES_DB_USER', 'fuiste'),
+        'USER': os.environ.get('POSTGRES_DB_USER', 'fuiste'),
         'PASSWORD': os.environ.get('POSTGRES_DB_PASS', ''),
         'HOST': 'localhost',
         'PORT': '5432',
