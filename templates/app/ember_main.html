@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ReviewSage Upload</title>
+  <meta charset="UTF-8" />
+  <meta name="description" content="{% block description %}{% endblock %}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ReviewSage Upload">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http:////maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link href="{{STATIC_URL}}css/r_css/lib/animate.css" rel="stylesheet">
+  <link href="{{STATIC_URL}}css/r_css/style-dark.css" rel="stylesheet">
+  <link href="{{STATIC_URL}}css/r_css/scheme/light-blue.css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+  <script src="http://builds.emberjs.com/release/ember.js"></script>
+  <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
+  <script src="{{STATIC_URL}}js/app/upload/app.js"></script>
+  <script src="{{STATIC_URL}}js/app/upload/models.js"></script>
+  <script src="{{STATIC_URL}}js/lib/ember-uploader.min.js"></script>
+  <style>
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+    }
+    .spinner {
+      margin: 100px auto;
+      width: 32px;
+      height: 32px;
+      position: relative;
+    }
+
+    .spinner {
+      margin: 100px auto 0;
+      width: 70px;
+      text-align: center;
+    }
+
+    .spinner > div {
+      width: 18px;
+      height: 18px;
+      background-color: #e09e26;
+
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+      animation: bouncedelay 1.4s infinite ease-in-out;
+      /* Prevent first frame from flickering when animation starts */
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
+
+    .spinner .bounce1 {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes bouncedelay {
+      0%, 80%, 100% { -webkit-transform: scale(0.0) }
+      40% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes bouncedelay {
+      0%, 80%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+      } 40% {
+          transform: scale(1.0);
+          -webkit-transform: scale(1.0);
+        }
+    }
+    .prompt, .group {
+      font-size: 35px;
+      padding: 20px;
+      background-color: #25292c;
+      margin: 10px 0;
+    }
+    .prompt .meta, .group .meta {
+      font-size: 20px;
+    }
+    .breadcrumb {
+      text-align: left
+    }
+    .node {
+      color: #333;
+      background-color: #EDEDED;
+      padding: 15px;
+      margin: 5px 0;
+    }
+    .selected-group {
+      background-color: #e09e26;
+      color: #333;
+    }
+    .selected-group .meta a {
+      color: #ededed;
+    }
+  </style>
+</head>
+<body>
+{% verbatim %}
+<script type="text/x-handlebars" data-template-name="application">
+  <div class="outter">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#reviewsage-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/reviewsage-white_32.png" alt="">FreeSage</a>
+        </div>
+      </div>
+    </nav>
+    <div class="section-outter">
+      <section style="min-height: 540px; background-color: #2f3238">
+        <div class="section-wrapper">
+          <div class="section-title">
+            <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
+            <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
+          </div>
+          <hr class="title-break" style="margin-bottom: 0">
+          <div class="section-inner">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  {{outlet}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer class="footer white section-wrapper">
+        <nav class="footer-nav" role="navigation">
+          <ul>
+          </ul>
+        </nav>
+        <p class="copyright">&copy; 2014 Saji, Ltd. All Rights Reserved</p>
+        <div class="footer-logo">
+          <img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/reviewsage-white_32.png" alt="">
+        </div>
+        <div class="spacer big"></div>
+      </footer>
+    </div>
+  </div>
+</script>
+<script type="text/x-handlebars" data-template-name="processing">
+  <div style="padding: 40px 0">
+    <div class="alert alert-info">
+      <strong>We're on it!</strong> Reviews are currently being grabbed and analyzed by FreeSage <i class="fa fa-smile-o"></i>
+    </div>
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+</script>
+{% endverbatim %}
+<script>
+  ENV = {FEATURES: {'query-params-new': true}};
+</script>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+    traditional: true,
+    crossDomain: false, // obviates need for sameOrigin test
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type)) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+</script>
+</body>
+</html>
