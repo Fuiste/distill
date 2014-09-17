@@ -204,19 +204,19 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="section-title">
-        <h2 class="title" data-effect="fadeInDown">{{property.name}}</h2>
-        <h4 class="subtitle" data-effect="fadeInUp">{{property.reviews.length}}</h4>
+        <h2 class="subtitle" data-effect="fadeInDown"><strong>{{name}}</strong></h2>
+        <h4 class="subtitle" data-effect="fadeInUp">Reviews: {{reviews.length}}</h4>
       </div>
-      {{#each review in reviews}}
+      {{#each review in sortedReviews}}
       <div class="prompt zoomIn animated">
         <div class="row">
+          <div class="col-sm-4">
+            <h4 style="color: #b8b9bc;"><strong>Score:</strong></h4>
+            <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
+          </div>
           <div class="col-sm-8">
-            <blockquote>
-              <p style="color: #3a3e45">Prompt text:</p>
-              <p class="lead" style="font-size: 31px">
-                "{{review.text}}"
-              </p>
-            </blockquote>
+            <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
+            <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
           </div>
         </div>
       </div>
