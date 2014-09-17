@@ -73,5 +73,9 @@
       dataset: null
     });
 
+    Explore.PropertyIndexRoute = Em.Route.extend({});
+
+    Explore.PropertyIndexController = Em.Controller.extend({});
+
   });
 }(window.jQuery, window.Handlebars, window.Ember, window.d3, window.vg);

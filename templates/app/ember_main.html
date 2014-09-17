@@ -199,6 +199,31 @@
       </div>
   </div>
 </script>
+
+<script type="text/x-handlebars" data-template-name="property">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="section-title">
+        <h2 class="title" data-effect="fadeInDown">{{property.name}}</h2>
+        <h4 class="subtitle" data-effect="fadeInUp">{{property.reviews.length}}</h4>
+      </div>
+      {{#each review in reviews}}
+      <div class="prompt zoomIn animated">
+        <div class="row">
+          <div class="col-sm-8">
+            <blockquote>
+              <p style="color: #3a3e45">Prompt text:</p>
+              <p class="lead" style="font-size: 31px">
+                "{{review.text}}"
+              </p>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</script>
 {% endverbatim %}
 <script>
   ENV = {FEATURES: {'query-params-new': true}};
