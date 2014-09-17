@@ -7,11 +7,11 @@ $(function(){
   //Models
   e.Review = m.extend({
     text: a('string'),
-    grade: a('number'),
+    grade: a('number')
   });
 
   e.Property = m.extend({
-    name = a('string'),
-    reviews = DS.hasMany('review');
+    name: a('string'),
+    reviews: DS.hasMany('review')
   });
 });

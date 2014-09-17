@@ -7,6 +7,7 @@
       LOG_ACTIVE_GENERATION: true,
       LOG_VIEW_LOOKUPS: true
     });
+
     window.Explore.store = DS.Store.extend({
       adapter: DS.RESTAdapter
     });
@@ -17,17 +18,22 @@
         $('html,body').animate({
           scrollTop: 0
         }, 1000);
-//        window.scrollTo(0,0);
       }
     });
 
     Explore.Router.map(function() {
-      this.resource('explore', {path: '/'}, function(){});
+      this.resource('explore', {path: '/'}, function(){
+      });
       this.resource('processing');
-      this.resource('properties', {path: 'properties'}, function(){});
+      this.resource('properties', {path: 'properties'}, function(){
+      });
       this.resource('property', {path: 'property/:property_id'}, function(){
-        this.resource('reviews', {path: '/reviews'}, function(){});
-        this.resource('review', {path: '/review/:review_id'}, function(){});
+        this.resource('reviews', {path: '/reviews'}, function(){
+        });
+        this.resource('review', {path: '/review/:review_id'}, function(){
+        });
       });
     });
+
+  });
 }(window.jQuery, window.Handlebars, window.Ember, window.d3, window.vg);
