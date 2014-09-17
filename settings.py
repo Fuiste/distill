@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(__file__)
+
+PROJECT_ROOT = os.path.dirname(__file__)
 
 
 # Quick-start development settings - unsuitable for production
@@ -79,6 +81,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = "staticfiles"
+
+if DEBUG:
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/static_serve/')
+    print STATIC_ROOT
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, "static"),
+)
+
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -90,8 +102,6 @@ TEMPLATE_LOADERS = (
 )
 
 APPEND_SLASH = False
-
-PROJECT_ROOT = os.path.dirname(__file__)
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, "templates"),
@@ -114,15 +124,3 @@ EXTERNAL_APPS = [
 ]
 
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS
-
-# Static asset configuration
-STATIC_ROOT = "staticfiles"
-
-if DEBUG:
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/static_serve/')
-
-STATIC_URL = os.environ.get("DJANGO_STATIC_URL", "/static/")
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
