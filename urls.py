@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^explore/?$', AppLandingView.as_view()),
+    url(r'^properties/?([0-9]+)?$', PropertiesView.as_view()),
 )
