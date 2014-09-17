@@ -35,15 +35,42 @@
       });
     });
 
-    Explore.exploreIndexRoute = Em.Route.extend({
-      yelpURL: "",
-      renderTemplate: function(){
-      },
+    Explore.ExploreIndexRoute = Em.Route.extend({
       actions: {
-        uploadComplete: function(datasetId){
-          this.transitionTo('processing', {queryParams: {property: propertyId}});
+        submitUrl: function(){
+          var self = this;
+          var url = this.controllerFor('exploreIndex').get('yelpURL');
+          $.ajax({
+            url: '/explore',
+            data: {yelp_url: url},
+            type: 'POST'
+          }).success(function(resp){
+            self.transitionTo('processing', {queryParams: {property: resp["property_id"]}});
+          });
         }
       }
+    });
+
+    Explore.ExploreIndexController = Em.Controller.extend({
+      yelpURL: "",
+      testVar: "HEY THERE",
+      actions: {},
+    });
+
+    Explore.ProcessingRoute = Em.Route.extend({
+      model: function(){},
+      setupController: function(controller, model){
+        var self = this;
+        var propertyPromise = self.store.find('property', controller.get('property'));
+        propertyPromise.then(function(prop){
+          self.transitionTo('property.index', prop);
+        });
+      }
+    });
+
+    Explore.ProcessingController = Em.Controller.extend({
+      queryParams: ['property'],
+      dataset: null
     });
 
   });
