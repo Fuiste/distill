@@ -35,5 +35,16 @@
       });
     });
 
+    Explore.exploreIndexRoute = Em.Route.extend({
+      yelpURL: "",
+      renderTemplate: function(){
+      },
+      actions: {
+        uploadComplete: function(datasetId){
+          this.transitionTo('processing', {queryParams: {property: propertyId}});
+        }
+      }
+    });
+
   });
 }(window.jQuery, window.Handlebars, window.Ember, window.d3, window.vg);
