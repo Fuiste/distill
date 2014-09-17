@@ -46,6 +46,47 @@ $(function(){
         html += "<i class='fa fa-star-half'></i> ";
       }
       return html;
-    }.property('averageScore')
+    }.property('averageScore'),
+    distributions: function(){
+      var total = 0;
+      var dists = [
+        {
+          score: "5 star",
+          grade: 5,
+          num: 0,
+          style: "width: 0%"
+        },
+        {
+          score: "4 star",
+          grade: 4,
+          num: 0,
+          style: "width: 0%"
+        },
+        {
+          score: "3 star",
+          grade: 3,
+          num: 0,
+          style: "width: 0%;"
+        },
+        {
+          score: "2 star",
+          grade: 2,
+          num: 0,
+          style: "width: 0%"
+        },
+        {
+          score: "1 star",
+          grade: 1,
+          num: 0,
+          style: "width: 0%"
+        }
+      ];
+      this.get('reviews').forEach(function(r){
+        dists.forEach(function(d){if(r.get('grade') == d.grade){d.num++;}});
+        total++;
+      });
+      dists.forEach(function(d){d.style = 'width: ' + ((d.num / total) * 100) + '%';});
+      return dists;
+    }.property('reviews')
   });
 });
