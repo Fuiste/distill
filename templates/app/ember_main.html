@@ -205,7 +205,8 @@
     <div class="col-sm-12">
       <div class="section-title">
         <h2 class="subtitle" data-effect="fadeInDown"><strong>{{name}}</strong></h2>
-        <h4 class="subtitle" data-effect="fadeInUp">Reviews: {{reviews.length}}</h4>
+        <h4 class="subtitle" data-effect="fadeInUp">Reviews: <strong>{{reviews.length}}</strong></h4>
+        <h4 class="subtitle" data-effect="fadeInUp">Average score: <strong style="color: #e09e26;">{{{averageScoreHtml}}}</strong> ({{averageScore}})</h4>
       </div>
       {{#each review in sortedReviews}}
       <div class="prompt zoomIn animated">
