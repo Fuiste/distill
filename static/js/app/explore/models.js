@@ -87,6 +87,12 @@ $(function(){
       });
       dists.forEach(function(d){d.style = 'width: ' + ((d.num / total) * 100) + '%';});
       return dists;
-    }.property('reviews')
+    }.property('reviews'),
+    bestReview: function(){
+      return this.get('sortedReviews')[0];
+    }.property('@each.sortedReviews'),
+    worstReview: function(){
+      return this.get('sortedReviews')[this.get('sortedReviews').length-1];
+    }.property('@each.sortedReviews')
   });
 });

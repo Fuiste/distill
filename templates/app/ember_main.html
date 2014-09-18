@@ -141,11 +141,6 @@
     <div class="section-outter">
       <section style="min-height: 540px; background-color: #2f3238">
         <div class="section-wrapper">
-          <div id="initial-title" class="section-title">
-            <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
-            <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
-          </div>
-          <hr class="title-break" style="margin-bottom: 0">
           <div class="section-inner">
             <div class="container">
               <div class="row">
@@ -187,6 +182,11 @@
 
 <script type="text/x-handlebars" data-template-name="explore">
   <div style="padding: 40px 0">
+    <div id="initial-title" class="section-title">
+      <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
+      <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
+    </div>
+    <hr class="title-break" style="margin-bottom: 0">
     <div class="section-title">
       <h4 class="subtitle">Enter the Yelp URL here:</h4>
     </div>
@@ -207,6 +207,18 @@
         <h2 class="title" data-effect="fadeInDown">{{name}}</h2>
         <h4 class="subtitle" data-effect="fadeInUp">Reviews: <strong>{{reviews.length}}</strong></h4>
         <h4 class="subtitle" data-effect="fadeInUp">Average score: <strong style="color: #e09e26;">{{{averageScoreHtml}}}</strong></h4>
+        <div class="row">
+          <div class="col-sm-6">
+            <h4 style="color: #e09e26;"><strong>Best review:</strong></h4>
+            <h4 style="color: #b8b9bc;">"{{bestReview.text}}"</h4>
+            <h4 style="color: #e09e26;">{{{bestReview.htmlGrade}}}</h4>
+          </div>
+          <div class="col-sm-6">
+            <h4 style="color: #e09e26;"><strong>Worst review:</strong></h4>
+            <h4 style="color: #b8b9bc;">"{{worstReview.text}}"</h4>
+            <h4 style="color: #e09e26;">{{{worstReview.htmlGrade}}}</h4>
+          </div>
+        </div>
         <hr class="title-break" style="margin-bottom: 0">
       </div>
       <div class="section-title">

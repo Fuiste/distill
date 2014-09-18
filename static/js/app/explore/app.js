@@ -63,7 +63,6 @@
         var self = this;
         var propertyPromise = self.store.find('property', controller.get('property'));
         propertyPromise.then(function(prop){
-          $('#initial-title').addClass('.hidden');
           self.transitionTo('property.index', prop);
         });
       }
