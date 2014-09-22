@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class Review(models.Model):
@@ -6,7 +7,9 @@ class Review(models.Model):
     A review of a location
     """
     text = models.CharField(max_length=5000)
+    author = models.CharField(max_length=1000, default="Unknown")
     grade = models.IntegerField(null=True)
+    created_date = models.DateTimeField(default=timezone.now(), null=False)
 
     def get_ember_dict(self):
         return {"text": self.text, "grade": self.grade, "id": self.id}

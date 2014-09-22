@@ -1,4 +1,14 @@
 !function ($, _H, Em, d3, vg) {
+
+  $('#ratings-affix').affix({
+    offset: {
+      top: 100
+    , bottom: function () {
+        return (this.bottom = $('.footer').outerHeight(true))
+      }
+    }
+  })
+
   $(function(){
 
     window.Explore = Em.Application.create({
@@ -73,7 +83,30 @@
       dataset: null
     });
 
-    Explore.PropertyIndexRoute = Em.Route.extend({});
+    Explore.PropertyIndexRoute = Em.Route.extend({
+      didInsertElement : function(){
+        var self = this;
+        Ember.run.next(function(){
+          setTimeout(function(){
+            var b = self.$('#ratings-affix');
+            b.affix({
+              offset:{
+                top:function(){
+                  var c = b.offset().top,
+                      d = parseInt(b.children(0).css('margin-top'),10),
+                      e = $('.subtxt-navbar').height();
+                  return this.top = c - e - d
+                },
+                bottom:function(){
+                  return this.bottom = $('.footer').outerHeight(!0)
+                }
+              }
+            })
+          }, 100);
+        });
+      },
+      actions: {}
+    });
 
     Explore.PropertyIndexController = Em.Controller.extend({});
 
