@@ -22,6 +22,7 @@ $(function(){
   e.Topic = m.extend({
     name: a('string'),
     reviews: DS.hasMany('review'),
+    selected: false
   });
 
   e.Property = m.extend({

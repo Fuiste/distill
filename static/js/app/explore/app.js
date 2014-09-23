@@ -105,7 +105,12 @@
           }, 100);
         });
       },
-      actions: {}
+      actions: {
+        selectTopic: function(topic){
+          var x = topic.get('selected');
+          topic.set('selected', !x);
+        },
+      }
     });
 
     Explore.PropertyIndexController = Em.Controller.extend({});

@@ -100,6 +100,22 @@
       background-color: #25292c;
       margin: 10px 0;
     }
+    .selected-prompt {
+      font-size: 35px;
+      padding: 20px;
+      background-color: #e09e26;
+      color: #333;
+      margin: 10px 0;
+    }
+    .color-gray {
+      color: #b8b9bc;
+    }
+    .color-orange {
+      color: #e09e26;
+    }
+    .color-dark {
+      color: #25292c;
+    }
     .prompt .meta, .group .meta {
       font-size: 20px;
     }
@@ -228,15 +244,15 @@
         <div class="section-title col-sm-8">
           <h2 class="title" data-effect="fadeInDown">Topics</h2>
           {{#each topic in topics}}
-          <div class="prompt zoomIn animated">
+          <div {{action 'selectTopic' topic}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
             <div class="row">
               <div class="col-sm-3">
-                <h4 style="color: #b8b9bc;"><strong>Reviews:</strong></h4>
-                <h4 style="color: #e09e26;">{{{topic.reviews.length}}}</h4>
+                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>Reviews:</strong></h4>
+                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}>{{{topic.reviews.length}}}</h4>
               </div>
               <div class="col-sm-9">
-                 <h4 style="color: #e09e26;"><strong>Title:</strong></h4>
-                 <h4 style="color: #b8b9bc;">{{topic.name}}</h4>
+                 <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}><strong>Title:</strong></h4>
+                 <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{topic.name}}</h4>
               </div>
             </div>
           </div>
