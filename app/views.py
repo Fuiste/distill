@@ -32,7 +32,7 @@ class PropertiesView(View):
         Returns ember-friendly dicts for a property and its associated reviews
         """
         prop = Property.objects.get(id=property_id)
-        return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember()}), content_type="application/json")
+        return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember(), "topics": prop.get_all_topic_dicts_for_ember()}), content_type="application/json")
 
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
