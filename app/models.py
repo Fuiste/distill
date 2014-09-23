@@ -15,6 +15,16 @@ class Review(models.Model):
         return {"text": self.text, "grade": self.grade, "id": self.id}
 
 
+class Topic(models.Model):
+    """
+    A topic denoting a cluster or grouping of reviews.
+        -'category' can be NGRAM, NOUNPHRASE, or ENTITY, defaults to NGRAM
+    """
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100, null=False, default='NGRAM')
+    reviews = models.ManyToManyField(Review, null=True)
+
+
 class Property(models.Model):
     """
     A physical location belonging to a Customer organization, stores its reviews
@@ -22,6 +32,7 @@ class Property(models.Model):
     #  Instance fields
     name = models.CharField(max_length=100)
     reviews = models.ManyToManyField(Review, null=True)
+    topics = models.ManyToManyField(Topic, null=True)
   
     def get_ember_dict(self):
         return {"name": self.name, "id": self.id, "reviews": [r.id for r in self.reviews.all()]}
