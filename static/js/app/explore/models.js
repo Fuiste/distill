@@ -27,8 +27,27 @@ $(function(){
 
   e.Property = m.extend({
     name: a('string'),
+    allSelected: true,
     reviews: DS.hasMany('review'),
     topics: DS.hasMany('topic'),
+    filteredReviews: function(){
+      if(this.get('allSelected')){return this.get('reviews');}
+      else{
+        revs = [];
+        this.get('topics').forEach(function(t){
+          t.get('reviews').forEach(function(r){
+            if(t.get('selected')){
+              var found = false;
+              revs.forEach(function(e){
+                if(r.get('id') == e.get('id')){found = true;}
+              });
+              if(!found){revs.pushObject(r);}
+            }
+          });
+        });
+        return revs;
+      }
+    }.property('topics.@each.selected', 'allSelected'),
     sortedReviews: function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),
@@ -41,7 +60,7 @@ $(function(){
       });
       score = score / num;
       return score;
-    }.property('@each.reviews'),
+    }.property('filteredReviews'),
     averageScoreHtml: function(){
       var score = this.get('averageScore');
       var html = "";
@@ -88,18 +107,18 @@ $(function(){
           style: "width: 0%"
         }
       ];
-      this.get('reviews').forEach(function(r){
+      this.get('filteredReviews').forEach(function(r){
         dists.forEach(function(d){if(r.get('grade') == d.grade){d.num++;}});
         total++;
       });
       dists.forEach(function(d){d.style = 'width: ' + ((d.num / total) * 100) + '%';});
       return dists;
-    }.property('reviews'),
+    }.property('filteredReviews'),
     bestReview: function(){
       return this.get('sortedReviews')[0];
-    }.property('@each.sortedReviews'),
+    }.property('@each.reviews'),
     worstReview: function(){
       return this.get('sortedReviews')[this.get('sortedReviews').length-1];
-    }.property('@each.sortedReviews')
+    }.property('@each.reviews')
   });
 });

@@ -106,10 +106,19 @@
         });
       },
       actions: {
-        selectTopic: function(topic){
+        selectTopic: function(topic, property){
           var x = topic.get('selected');
           topic.set('selected', !x);
+          property.set('allSelected', false);
         },
+        selectAllTopics: function(property){
+          if(!property.get('allSelected')){
+            property.get('topics').forEach(function(t){
+              t.set('selected', false);
+            });
+            property.set('allSelected', true);
+          }else{property.set('allSelected', false);}
+        }
       }
     });
 

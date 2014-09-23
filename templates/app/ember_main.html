@@ -243,8 +243,20 @@
       <div class="row">
         <div class="section-title col-sm-8">
           <h2 class="title" data-effect="fadeInDown">Topics</h2>
+          <div {{action 'selectAllTopics' this}} {{bind-attr class="allSelected:selected-prompt:prompt :zoomIn :animated"}}>
+            <div class="row">
+              <div class="col-sm-3">
+                <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}><strong>Reviews:</strong></h4>
+                <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}>{{{reviews.length}}}</h4>
+              </div>
+              <div class="col-sm-9">
+                 <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}><strong>Title:</strong></h4>
+                 <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}>All topics</h4>
+              </div>
+            </div>
+          </div>
           {{#each topic in topics}}
-          <div {{action 'selectTopic' topic}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
+          <div {{action 'selectTopic' topic this}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
             <div class="row">
               <div class="col-sm-3">
                 <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>Reviews:</strong></h4>
