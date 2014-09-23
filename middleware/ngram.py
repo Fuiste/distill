@@ -89,6 +89,7 @@ def find_and_init_ngrams_for_property(prop, n=2):
         ngz.append(Topic(category='NGRAM', name=' '.join(gram[0])))
     for gram in ngz:
         gram.save()
+        prop.topics.add(gram)
   
     # Map nodes to new Ngram models
     node_ngram_map = {}
@@ -96,6 +97,7 @@ def find_and_init_ngrams_for_property(prop, n=2):
         ngram_indices = []
         for i, ng in enumerate(ngz):
             if most_common[i][0] in ngrams([word.strip() for word in r.text.split() if word not in ENGLISH_STOP_WORDS], n):
+                print "FOUND ONE"
                 ngram_indices.append(i)
                 ng.reviews.add(r)
                 ng.save()
