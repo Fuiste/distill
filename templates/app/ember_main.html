@@ -226,17 +226,17 @@
       </div>
       <div class="row">
         <div class="section-title col-sm-8">
-          <h2 class="title" data-effect="fadeInDown">Reviews</h2>
-          {{#each review in sortedReviews}}
+          <h2 class="title" data-effect="fadeInDown">Topics</h2>
+          {{#each topic in topics}}
           <div class="prompt zoomIn animated">
             <div class="row">
-              <div class="col-sm-4">
-                <h4 style="color: #b8b9bc;"><strong>Score:</strong></h4>
-                <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
+              <div class="col-sm-3">
+                <h4 style="color: #b8b9bc;"><strong>Reviews:</strong></h4>
+                <h4 style="color: #e09e26;">{{{topic.reviews.length}}}</h4>
               </div>
-              <div class="col-sm-8">
-                 <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
-                 <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
+              <div class="col-sm-9">
+                 <h4 style="color: #e09e26;"><strong>Title:</strong></h4>
+                 <h4 style="color: #b8b9bc;">{{topic.name}}</h4>
               </div>
             </div>
           </div>
@@ -255,6 +255,26 @@
           </div>
           {{/each}}
           </div>
+        </div>
+      </div>
+      <hr class="title-break" style="margin-bottom: 0">
+      <div class="row">
+        <div class="section-title col-sm-12">
+          <h2 class="title" data-effect="fadeInDown">Reviews</h2>
+          {{#each review in sortedReviews}}
+          <div class="prompt zoomIn animated">
+            <div class="row">
+              <div class="col-sm-4">
+                <h4 style="color: #b8b9bc;"><strong>Score:</strong></h4>
+                <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
+              </div>
+              <div class="col-sm-8">
+                 <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
+                 <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
+              </div>
+            </div>
+          </div>
+          {{/each}}
         </div>
       </div>
     </div>

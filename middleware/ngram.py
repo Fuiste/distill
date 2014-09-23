@@ -6,10 +6,9 @@ import math
 from django.core.exceptions import ObjectDoesNotExist
 from gensim import corpora, models, similarities
 import logging
-from app.models import Tree, Node, Prompt, Response, Ngram
 from nltk.util import ngrams
+from app.models import *
 import nltk
-
 
 
 ENGLISH_STOP_WORDS = frozenset([
@@ -56,40 +55,23 @@ ENGLISH_STOP_WORDS = frozenset([
     "yourselves"])
 
 
-def get_all_nodes_in_tree(root_node):
-    """Recursive. Using a breadth-first traversal, finds all nodes in the tree rooted by root_node
-
-    Args: 
-        root_node: A node model representing the root from where to begin
-    Returns:
-        An string of response texts within the tree bound by root_node
+def find_and_init_ngrams_for_property(prop, n=2):
     """
-    nodes = [root_node]
-    queue = list(root_node.children.all())
-    while len(queue):
-        node = queue.pop(0)
-        nodes.append(node)
-        queue.extend(list(node.children.all()))
-    return nodes
-
-
-def find_most_common_ngrams(root_node, n=2):
-    """Search the tree rooted by root_node for the most common n-grams
-
-    Args: 
-        root_node: a Node model from which to begin the search
-        n: n-gram size (2=bigram, 3=trigram, etc...)
+    Assuming all reviews are grabbed for a property, analyzes review space and builds topic models for ngrams of the given size
+    
+    Args:
+        prop: a property model to analyze
+        n: n-gram size
     Returns:
-        An array of dicts representing up to 5 n-grams in the form:
-          [{"value": <STRING>, "count": <INT>}, {"value": <STRING>, "count": <INT>}, ...]
+        True
     """
-    nodes = get_all_nodes_in_tree(root_node)
-    # Grab all responses in the tree as one long string, then split them into n-grams
+    if len(prop.topics.all()):
+        print "Found stale topics, deleting..."
+        prop.topics.all().delete()
     resps = ""
-    for node in nodes:
-        resps += node.response
-        if len(node.ngrams.all()):
-            node.ngrams.all().delete()
+    # Grab all reivews for the property as one long string, then split them into n-grams
+    for r in prop.reviews.all():
+        resps += r.text
     words = [word.strip() for word in resps.split() if word not in ENGLISH_STOP_WORDS]
     grams = ngrams(words, n)
 
@@ -101,47 +83,24 @@ def find_most_common_ngrams(root_node, n=2):
     else:
         most_common = dist.items()
 
-    # create new n-grams
-    try:
-        ngram_id_gen = Ngram.objects.latest("id").id
-    except ObjectDoesNotExist as ng:
-        ngram_id_gen = -1
+    # create new n-gram topics
     ngz = []
     for gram in most_common:
-        ngram_id_gen += 1
-        ngz.append(Ngram(id=ngram_id_gen, text=' '.join(gram[0])))
-    Ngram.objects.bulk_create(ngz)
+        ngz.append(Topic(category='NGRAM', name=' '.join(gram[0])))
     for gram in ngz:
         gram.save()
   
     # Map nodes to new Ngram models
     node_ngram_map = {}
-    for node in nodes:
+    for r in prop.reviews.all():
         ngram_indices = []
         for i, ng in enumerate(ngz):
-            if most_common[i][0] in ngrams([word.strip() for word in node.response.split() if word not in ENGLISH_STOP_WORDS], n):
+            if most_common[i][0] in ngrams([word.strip() for word in r.text.split() if word not in ENGLISH_STOP_WORDS], n):
                 ngram_indices.append(i)
-                print ng.text
-        node.ngrams.add(*[ngz[k] for k in ngram_indices])
-    for node in nodes:
-        print node.ngrams.all()
+                ng.reviews.add(r)
+                ng.save()
+    return True
 
-    """
-    print most_common
-    for gram in most_common:
-        for node in nodes:
-            resp = [word.strip() for word in node.response.split() if word not in ENGLISH_STOP_WORDS]
-            resp_grams = ngrams(resp, n)
-            if gram[0] in resp_grams:
-                tgt_gram = Ngram.objects.filter(text=' '.join(gram[0]))
-                new_gram = None
-                if len(tgt_gram):
-                    new_gram = tgt_gram[0]
-                else:
-                    new_gram = Ngram(text=' '.join(gram[0]))
-                    new_gram.save()
-                node.ngrams.add(new_gram)
-    """
                 
             
 
