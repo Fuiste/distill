@@ -24,6 +24,9 @@ class Topic(models.Model):
     category = models.CharField(max_length=100, null=False, default='NGRAM')
     reviews = models.ManyToManyField(Review, null=True)
 
+    def get_ember_dict(self):
+        return {"name": self.name, "id": self.id, "reviews": [r.id for r in self.reviews.all()]}
+
 
 class Property(models.Model):
     """
@@ -35,8 +38,11 @@ class Property(models.Model):
     topics = models.ManyToManyField(Topic, null=True)
   
     def get_ember_dict(self):
-        return {"name": self.name, "id": self.id, "reviews": [r.id for r in self.reviews.all()]}
+        return {"name": self.name, "id": self.id, "reviews": [r.id for r in self.reviews.all()], "topics": [t.id for t in self.topics.all()]}
 
     def get_all_review_dicts_for_ember(self):
         return [r.get_ember_dict() for r in self.reviews.all()]
+
+    def get_all_topic_dicts_for_ember(self):
+        return [t.get_ember_dict() for t in self.topics.all()]
 

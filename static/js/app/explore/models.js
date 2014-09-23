@@ -19,9 +19,15 @@ $(function(){
     }.property('grade')
   });
 
+  e.Topic = m.extend({
+    name: a('string'),
+    reviews: DS.hasMany('review'),
+  });
+
   e.Property = m.extend({
     name: a('string'),
     reviews: DS.hasMany('review'),
+    topics: DS.hasMany('topic'),
     sortedReviews: function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),
