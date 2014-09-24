@@ -84,27 +84,6 @@
     });
 
     Explore.PropertyIndexRoute = Em.Route.extend({
-      didInsertElement : function(){
-        var self = this;
-        Ember.run.next(function(){
-          setTimeout(function(){
-            var b = self.$('#ratings-affix');
-            b.affix({
-              offset:{
-                top:function(){
-                  var c = b.offset().top,
-                      d = parseInt(b.children(0).css('margin-top'),10),
-                      e = $('.subtxt-navbar').height();
-                  return this.top = c - e - d
-                },
-                bottom:function(){
-                  return this.bottom = $('.footer').outerHeight(!0)
-                }
-              }
-            })
-          }, 100);
-        });
-      },
       actions: {
         selectTopic: function(topic, property){
           var x = topic.get('selected');
@@ -123,6 +102,30 @@
     });
 
     Explore.PropertyIndexController = Em.Controller.extend({});
+
+    Explore.PropertyIndexView = Em.View.extend({
+      didInsertElement : function(){
+        var self = this;
+        Ember.run.next(function(){
+          setTimeout(function(){
+            var b = self.$('.ratings-affix');
+            b.affix({
+              offset:{
+                top:function(){
+                  var c = b.offset().top,
+                      d = parseInt(b.children(0).css('margin-top'),10),
+                      e = $('.navbar').height();
+                  return this.top = c - e - d
+                },
+                bottom:function(){
+                  return this.bottom = $('.footer').outerHeight(!0)
+                }
+              }
+            })
+          }, 100);
+        });
+      },
+    });
 
   });
 }(window.jQuery, window.Handlebars, window.Ember, window.d3, window.vg);
