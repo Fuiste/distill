@@ -52,7 +52,7 @@ ENGLISH_STOP_WORDS = frozenset([
     "wherein", "whereupon", "wherever", "whether", "which", "while", "whither",
     "who", "whoever", "whole", "whom", "whose", "why", "will", "with",
     "within", "without", "would", "yet", "you", "your", "yours", "yourself",
-    "yourselves"])
+    "yourselves", "I"])
 
 
 def find_and_init_ngrams_for_property(prop, n=2):

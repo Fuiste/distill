@@ -52,6 +52,9 @@ $(function(){
     allSelected: true,
     reviews: DS.hasMany('review'),
     topics: DS.hasMany('topic'),
+    sortedTopics: function(){
+      return this.get('topics').sortBy('reviews.length').reverse();
+    }.property('@each.topics'),
     filteredReviews: function(){
       if(this.get('allSelected')){return this.get('reviews');}
       else{
