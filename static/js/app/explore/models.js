@@ -51,6 +51,9 @@ $(function(){
     sortedReviews: function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),
+    filteredSortedReviews: function(){
+      return this.get('filteredReviews').sortBy('grade').reverse();
+    }.property('filteredReviews'),
     averageScore: function(){
       var score = 0;
       var num = 0;
@@ -80,31 +83,31 @@ $(function(){
           score: "5 star",
           grade: 5,
           num: 0,
-          style: "width: 0%"
+          style: "width: 0"
         },
         {
           score: "4 star",
           grade: 4,
           num: 0,
-          style: "width: 0%"
+          style: "width: 0"
         },
         {
           score: "3 star",
           grade: 3,
           num: 0,
-          style: "width: 0%;"
+          style: "width: 0;"
         },
         {
           score: "2 star",
           grade: 2,
           num: 0,
-          style: "width: 0%"
+          style: "width: 0"
         },
         {
           score: "1 star",
           grade: 1,
           num: 0,
-          style: "width: 0%"
+          style: "width: 0"
         }
       ];
       this.get('filteredReviews').forEach(function(r){

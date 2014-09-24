@@ -100,6 +100,12 @@
       background-color: #25292c;
       margin: 10px 0;
     }
+    .special-prompt {
+      font-size: 35px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin: 10px 0;
+    }
     .selected-prompt {
       font-size: 35px;
       padding: 20px;
@@ -245,13 +251,9 @@
           <h2 class="title" data-effect="fadeInDown">Topics</h2>
           <div {{action 'selectAllTopics' this}} {{bind-attr class="allSelected:selected-prompt:prompt :zoomIn :animated"}}>
             <div class="row">
-              <div class="col-sm-3">
-                <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}><strong>Reviews:</strong></h4>
-                <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}>{{{reviews.length}}}</h4>
-              </div>
-              <div class="col-sm-9">
-                 <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}><strong>Title:</strong></h4>
-                 <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}>All topics</h4>
+              <div class="col-sm-12">
+                 <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}><strong>All</strong></h4>
+                 <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}>Reviews</h4>
               </div>
             </div>
           </div>
@@ -273,23 +275,32 @@
         <div id="ratings-affix" class="section-title col-sm-4">
           <h2 class="title" data-effect="fadeInDown">Score Breakdown</h2>
           <div class="prompt">
-          {{#each distributions}}
-          <div>
-            <h4 class="pull-left" style="color: #b8b9bc;">{{score}} reviews: <strong style="color: #e09e26;">{{num}}</strong></h4>
-            <div class="clearfix"></div>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" {{bind-attr style="style"}}></div>
-          </div>
-          {{/each}}
+            {{#each distributions}}
+            <div>
+              <h4 class="pull-left" style="color: #b8b9bc;">{{score}} reviews: <strong style="color: #e09e26;">{{num}}</strong></h4>
+              <div class="clearfix"></div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" {{bind-attr style="style"}}></div>
+            </div>
+            {{/each}}
+            {{#unless allSelected}}
+            <div class="selected-prompt">
+              <h4 class="color-dark">Filtered reviews below.</h4>
+            </div>
+            {{else}}
+            <div class="special-prompt">
+              <h4 class="color-orange">Reviews below.</h4>
+            </div>
+            {{/unless}}
           </div>
         </div>
       </div>
       <hr class="title-break" style="margin-bottom: 0">
       <div class="row">
         <div class="section-title col-sm-12">
-          <h2 class="title" data-effect="fadeInDown">Reviews</h2>
-          {{#each review in sortedReviews}}
+          <h2 class="title" data-effect="fadeInDown">Selected Reviews</h2>
+          {{#each review in filteredSortedReviews}}
           <div class="prompt zoomIn animated">
             <div class="row">
               <div class="col-sm-4">
