@@ -260,13 +260,17 @@
           {{#each topic in topics}}
           <div {{action 'selectTopic' topic this}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
             <div class="row">
-              <div class="col-sm-3">
-                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>Reviews:</strong></h4>
-                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}>{{{topic.reviews.length}}}</h4>
-              </div>
-              <div class="col-sm-9">
+              <div class="col-sm-4">
                  <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}><strong>Title:</strong></h4>
                  <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{topic.name}}</h4>
+              </div>
+              <div class="col-sm-4">
+                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>Score:</strong></h4>
+                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}>{{{topic.averageScoreHtml}}}</h4>
+              </div>
+              <div class="col-sm-4">
+                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}><strong>Reviews:</strong></h4>
+                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{{topic.reviews.length}}}</h4>
               </div>
             </div>
           </div>
