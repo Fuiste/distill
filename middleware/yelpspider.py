@@ -13,6 +13,7 @@ from pattern.web import Crawler, URL, DOM, plaintext, abs
 import time
 import unicodedata
 import logging
+from app.models import Property, ScrapedTextProvider, Review
 
 __author__ = "MDee"
 
@@ -32,6 +33,52 @@ def encode_utf(s):
     problematic characters.
     """
     return unicode(s).translate(TRANSLATE_TABLE)
+
+class ScrapedTextProviderDTO(object):
+    """
+    """
+    def __init__(self, name, url, rated=True, domains=[], max_rating=5.0):
+        '''Create a provider.'''
+        self.name = name
+        self.url = url
+        self.rated = rated
+        self.max_rating = max_rating
+        if domains:
+            self.domains = domains
+        else:
+            base_url = URL(url)
+            self.domains = [base_url.domain]
+
+class ScrapedTextDTO(object):
+    """
+    """
+    def __init__(self, property_id, provider, content, pub_date, date_format="%Y-%m-%d", rating=None, title=None):
+        # Each of these is raw, scraped data
+        self.property_id = property_id
+        self.provider = provider
+        self.rating = rating
+        self.content = content
+        self.pub_date = pub_date
+        self.title = title
+        self.date_format = date_format
+        # Additionally, store the normalized rating
+        try:
+            self.normalized_rating = float(rating) / provider.max_rating
+        except TypeError:
+            print "Error trying to create normalized rating for TripAdvisor review"
+            print "Rating value: {0}".format(rating)
+            raise Exception
+
+    def save(self, *args, **kwargs):
+        """
+        """
+        property = Property.objects.get(pk=self.property_id)
+
+    def __unicode__(self):
+        return "\nDate: {0} Rating: {1}\nSource: {2}\n{3}".format(self.pub_date, self.rating, self.content)
+
+    def __str__(self):
+        return unicode(self).encode("utf-8")
 
 class Spiderman(Crawler):
     name = ""
@@ -118,25 +165,6 @@ class Spiderman(Crawler):
         """Return a pattern.web.DOM object given a link or source html."""
         return DOM(source) if source else DOM(self.fetch_url(url=link))
 
-    def record_exists_for_item(self, review_item):
-        """Checks if a database record already exists for a given Review.
-        Uses the attributes in self.unique_attributes as unique keys to check
-        for.
-        """
-        if self.get_unique_attributes():
-            # A dictionary of the item's attribute values for each attribute
-            # in self.unique attributes
-            attr_dict = {"provider__name": self.provider.name}
-            for attribute in self.get_unique_attributes():
-                attr_dict[attribute] = getattr(review_item, attribute)
-            # If a record exists with any of the same attributes as the item
-            if ScrapedText.objects.filter(**attr_dict):
-                return True
-            else:
-                return False
-        else:
-            raise (ValueError, "Must define unique_attributes list.")
-
     def scrape_rating(self, elem):
         """Returns a rating value (float) given a base element."""
         raise NotImplementedError
@@ -148,18 +176,6 @@ class Spiderman(Crawler):
     def scrape_date(self, elem):
         """Returns a review's publish date given a base element."""
         raise NotImplementedError
-
-    def scrape_source_url(self, elem):
-        """Returns a review's permalink given a base element.
-
-        If it's not overridden, just returns the url where the review was scraped from.
-
-        Args:
-            elem: An object representing a review / scraped block of text
-        Returns:
-            A String of top-level URL where this review came from
-        """
-        return self.url
 
     def scrape_title(self, elem):
         return ""
@@ -177,14 +193,13 @@ class Spiderman(Crawler):
         if date is None:
             print "DATE IS NONE, SKIPPING REVIEW"
             return None
-        source_url = self.scrape_source_url(elem)
         rating = None
         title = self.scrape_title(elem)
         if self.rated_text:
             rating = self.scrape_rating(elem)
             # Return a ScrapedText instance
         scraped_elem = ScrapedTextDTO(provider=self.provider, property_id=self.property_id, content=content,
-                                      pub_date=date, date_format=self.date_format, source_url=source_url, rating=rating, title=title)
+                                      pub_date=date, date_format=self.date_format, rating=rating, title=title)
         return scraped_elem
 
     def start(self, limit=None):
@@ -243,14 +258,18 @@ class Spiderman(Crawler):
         self.retrieved_count += 1
         property = Property.objects.get(pk=scraped_text_dto.property_id)
         content = scraped_text_dto.content
+        content = content.replace("<br>", "\n");
         pub_date = datetime.datetime.strptime(scraped_text_dto.pub_date, scraped_text_dto.date_format)
         rating = float(scraped_text_dto.rating)
-        rated_scraped_text = Review(text=content, source_url=source_url, created_date=pub_date, grade=rating)
-        # Save it to this list in order to send out an alert
-        property.reviews.add(rated_scraped_text)
-        rated_scraped_text.save()
-        if self.verbose:
-            print "Saved to DB: {0}".format(rated_scraped_text)
+        if len(Review.objects.filter(text=content, grade=rating)):
+            print "Already existed"
+        else:
+            rated_scraped_text = Review(text=content, created_date=pub_date, grade=rating)
+            rated_scraped_text.save()
+            # Save it to this list in order to send out an alert
+            property.reviews.add(rated_scraped_text)
+            if self.verbose:
+                print "Saved to DB: {0}".format(rated_scraped_text)
 
     def visit(self, link, source=None):
         """
@@ -291,11 +310,6 @@ class Spiderman(Crawler):
             if text_year == self.review_date_cutoff:
                 print "Hit a review that was written in the {0}, and the cutoff is {1}".format(text_year, self.review_date_cutoff)
                 return CUTOFF_HIT
-            elif self.record_exists_for_item(scraped_text_elem):
-                if self.verbose:
-                    logger.info("Record already exists for ScrapedText. Skipping...")
-                    # Continue without saving the item to database
-                    continue
             else:
                 # Save it to the database
                 self.save_item(scraped_text_elem)
@@ -316,7 +330,7 @@ class YelpSpider(Spiderman):
     domains = ["www.yelp.com"]
     date_format = "%Y-%m-%d"
     # Each review's permalink is unique, so use it as a unique key to prevent duplicate records
-    unique_attributes = ["source_url"]
+    unique_attributes = []
     date_sort_query_param = "sort_by=date_desc"
     paginated_result_query_param = "start={0}"
     reviews_per_page = 40
@@ -371,9 +385,7 @@ class YelpSpider(Spiderman):
         review_count = self.scrape_review_count(dom)
         logger.info("Yelp sez it has {0} reviews for Property with PK {1}".format(review_count, self.property_id))
         self.desired_count = review_count
-        provider = ScrapedTextProvider.objects.get(name=self.provider.name)
-        existing_scraped_text = ScrapedText.objects.filter(provider=provider, property=self.property_id)
-        self.existing_count = len(existing_scraped_text)
+        self.existing_count = len(Property.objects.get(id=self.property_id).reviews.all())
         logger.info("{0} reviews already exist in DB for Property with PK {1} on Yelp".format(self.existing_count, self.property_id))
         if self.desired_count == self.existing_count or self.existing_count > self.desired_count:
             logger.info("No scraping necessary\n, attempting to save what's on the front page")
@@ -421,11 +433,6 @@ class YelpSpider(Spiderman):
             if text_year == self.review_date_cutoff:
                 print "Hit a review that was written in the {0}, and the cutoff is {1}".format(text_year, self.review_date_cutoff)
                 return CUTOFF_HIT
-            if self.record_exists_for_item(scraped_text_elem):
-                if self.verbose:
-                    logger.info("Record already exists for ScrapedText. Skipping...")
-                    # Continue without saving the item to database
-                    continue
             else:
                 # Save it to the database
                 # logger.info("New record, saving")
@@ -501,24 +508,3 @@ class YelpSpider(Spiderman):
         meta_tag = meta_tag_result[0]
         date = plaintext(meta_tag.attributes["content"])
         return date
-
-    def scrape_source_url(self, elem):
-        """Scrape the review's source_url, which uniquely identifies it
-
-        Args:
-            elem: An object representing a review in the DOM
-        Returns:
-            The review's source_url, or the scraper's starting URL
-        """
-        anchor_result = elem.by_class("action-link")
-        if not anchor_result:
-            logger.error("Error finding anchor with source_url for Yelp Review")
-            logger.error("Class was {0}, here's the elem: {1}".format("i-orange-link-common-wrap", elem))
-            return super(YelpSpider, self).scrape_source_url(elem)
-        anchor = anchor_result[0]
-        href = urllib.unquote(anchor.attributes["href"])
-        return_url = href.split("return_url=")[1]
-        return_split = return_url.split("?")
-        id_split = return_split[1].split("reviewid=") if len(return_split) > 1 else return_split[0].split("reviewid=")
-        link = return_split[0] + "?hrid=" + id_split[1]
-        return link

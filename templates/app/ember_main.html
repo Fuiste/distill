@@ -202,7 +202,7 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="explore">
+<script type="text/x-handlebars" data-template-name="explore/index">
   <div style="padding: 40px 0">
     <div id="initial-title" class="section-title">
       <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
@@ -214,7 +214,7 @@
     </div>
     <div class="row">
       <div class="input-group">
-        {{input class="form-control" value=yelpURL}}
+        {{input class="form-control" value=this.controller.yelpUrl}}
         <div class="input-group-btn">
           <button {{action 'submitUrl'}} class="btn btn-info">Submit</button>
         </div>

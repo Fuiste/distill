@@ -19,7 +19,10 @@ class AppLandingView(View):
         return render_to_response("app/ember_main.html", {}, context_instance=RequestContext(request))
 
     def post(self, request):
-        prop = Property.objects.get(name="Ian's Pizza on State (fake)")
+        # prop = Property.objects.get(name="Ian's Pizza on State (fake)")
+        print request.POST["yelp_url"]
+        prop = Property(name=request.POST["yelp_url"], yelp_url=request.POST["yelp_url"])
+        prop.save()
         return HttpResponse(json.dumps({"property_id": prop.id}), content_type="application/json")
 
     @csrf_exempt

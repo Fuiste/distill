@@ -49,7 +49,7 @@
       actions: {
         submitUrl: function(){
           var self = this;
-          var url = this.controllerFor('exploreIndex').get('yelpURL');
+          var url = this.controllerFor('exploreIndex').get('yelpUrl');
           $.ajax({
             url: '/explore',
             data: {yelp_url: url},
@@ -62,8 +62,7 @@
     });
 
     Explore.ExploreIndexController = Em.Controller.extend({
-      yelpURL: "",
-      testVar: "HEY THERE",
+      yelpUrl: "TEST",
       actions: {},
     });
 
