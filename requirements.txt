@@ -2,6 +2,7 @@ Django==1.6.6
 PyYAML==3.11
 South==1.0
 argparse==1.2.1
+codegen==1.0
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-picklefield==0.3.1
@@ -13,6 +14,7 @@ jdcal==1.0
 nltk==2.0.4
 numpy==1.9.0
 openpyxl==2.0.5
+patterns==0.3
 psycopg2==2.5.3
 python-dateutil==2.2
 python-mimeparse==0.1.4

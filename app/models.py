@@ -35,6 +35,7 @@ class Property(models.Model):
     name = models.CharField(max_length=100)
     reviews = models.ManyToManyField(Review, null=True)
     topics = models.ManyToManyField(Topic, null=True)
+    yelp_url = models.URLField(null=True)
   
     def get_ember_dict(self):
         return {"name": self.name, "id": self.id, "reviews": [r.id for r in self.reviews.all()], "topics": [t.id for t in self.topics.all()]}

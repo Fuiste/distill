@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from app.models import *
 from middleware.ngram import find_and_init_ngrams_for_property
+from middleware.yelpspider import YelpSpider
 
 # Create your views here.
 
@@ -41,6 +42,12 @@ class PropertiesView(View):
         #        generate = False
         #if generate:
         #    find_and_init_ngrams_for_property(prop)
+        review_date_cutoff = 2011
+        yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp",
+                                     review_date_cutoff=review_date_cutoff)
+        print "Starting Yelp spider for {0}".format(prop.name)
+        yelp_spider.start()
+        print "Yelp done!"
         find_and_init_ngrams_for_property(prop)
         return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember(), "topics": prop.get_all_topic_dicts_for_ember()}), content_type="application/json")
 
