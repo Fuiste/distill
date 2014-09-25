@@ -108,13 +108,13 @@ $(function(){
           score: "5 star",
           grade: 5,
           num: 0,
-          style: "width: 0"
+          style: "width: 0;"
         },
         {
           score: "4 star",
           grade: 4,
           num: 0,
-          style: "width: 0"
+          style: "width: 0;"
         },
         {
           score: "3 star",
@@ -126,13 +126,13 @@ $(function(){
           score: "2 star",
           grade: 2,
           num: 0,
-          style: "width: 0"
+          style: "width: 0;"
         },
         {
           score: "1 star",
           grade: 1,
           num: 0,
-          style: "width: 0"
+          style: "width: 0;"
         }
       ];
       this.get('filteredReviews').forEach(function(r){
