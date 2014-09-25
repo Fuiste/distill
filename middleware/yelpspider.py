@@ -242,19 +242,13 @@ class Spiderman(Crawler):
         """
         self.retrieved_count += 1
         property = Property.objects.get(pk=scraped_text_dto.property_id)
-        provider = ScrapedTextProvider.objects.get(name__iexact=scraped_text_dto.provider.name)
         content = scraped_text_dto.content
-        source_url = scraped_text_dto.source_url
         pub_date = datetime.datetime.strptime(scraped_text_dto.pub_date, scraped_text_dto.date_format)
         rating = float(scraped_text_dto.rating)
-        title = scraped_text_dto.title
-        rated_scraped_text = ScrapedText(property=property, provider=provider, content=content,
-                                                          source_url=source_url, pub_date=pub_date, rating=rating, title=title)
-        # Create the sentence objects
-        rated_scraped_text.reset_sentences()
-        rated_scraped_text.save()
+        rated_scraped_text = Review(text=content, source_url=source_url, created_date=pub_date, grade=rating)
         # Save it to this list in order to send out an alert
-        self.new_reviews.append(rated_scraped_text)
+        property.reviews.add(rated_scraped_text)
+        rated_scraped_text.save()
         if self.verbose:
             print "Saved to DB: {0}".format(rated_scraped_text)
 
