@@ -116,24 +116,24 @@
           var color = '#e09e26';
           groupData.push({x: xAxisLabel, y: g.num, color: color});
         });
-        var padding = {top: 10, left: 50, bottom: 50, right: 10};
+        var padding = {top: 10, left: 50, bottom: 70, right: 10};
         var spec = {
           padding: padding,
           width: self.$().width() - padding.left - padding.right,
           height: 300,
           data: [{name : 'Scores', values: groupData}],
           scales: [
-            {name: 'x', type: 'ordinal', range: 'width', domain: {data: 'Groups', field: 'data.x'}},
-            {name: 'y', range: 'height', nice:true, domain: {data: 'Groups', field: 'data.y'}}
+            {name: 'x', type: 'ordinal', range: 'width', domain: {data: 'Scores', field: 'data.x'}},
+            {name: 'y', range: 'height', nice:true, domain: {data: 'Scores', field: 'data.y'}}
           ],
           axes: [
-            {type: 'x', scale: 'x', properties: {labels: {angle: {value: -50}, dx: {value: -20}, fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}},
-            {type: 'y', scale: 'y', title: "# Documents", properties: {title: {fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}}
+            {type: 'x', scale: 'x', title: "Score", properties: {title: {dy: {value: 20}, fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {angle: {value: -50}, dx: {value: -20}, fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}},
+            {type: 'y', scale: 'y', title: "# of Reviews", properties: {title: {fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}}
           ],
           marks: [
             {
               type: 'rect',
-              from: {data: 'Groups'},
+              from: {data: 'Scores'},
               properties: {
                 enter: {
                   x: {scale: 'x', field: 'data.x'},
