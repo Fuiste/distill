@@ -102,6 +102,58 @@
 
     Explore.PropertyIndexController = Em.Controller.extend({});
 
+    Explore.VerticalBarChartComponent = Ember.Component.extend({
+      classNames: ['animated', 'fadeInDown'],
+      didInsertElement: function(){
+        Ember.run.once(this, 'update');
+      },
+      update: function(){
+        var self = this;
+        var groups = this.get('data');
+        var groupData = []
+        groups.forEach(function(g){
+          var xAxisLabel = g.score;
+          var color = '#e09e26';
+          groupData.push({x: xAxisLabel, y: g.num, color: color});
+        });
+        var padding = {top: 10, left: 50, bottom: 50, right: 10};
+        var spec = {
+          padding: padding,
+          width: self.$().width() - padding.left - padding.right,
+          height: 300,
+          data: [{name : 'Scores', values: groupData}],
+          scales: [
+            {name: 'x', type: 'ordinal', range: 'width', domain: {data: 'Groups', field: 'data.x'}},
+            {name: 'y', range: 'height', nice:true, domain: {data: 'Groups', field: 'data.y'}}
+          ],
+          axes: [
+            {type: 'x', scale: 'x', properties: {labels: {angle: {value: -50}, dx: {value: -20}, fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}},
+            {type: 'y', scale: 'y', title: "# Documents", properties: {title: {fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}}
+          ],
+          marks: [
+            {
+              type: 'rect',
+              from: {data: 'Groups'},
+              properties: {
+                enter: {
+                  x: {scale: 'x', field: 'data.x'},
+                  width: {scale: 'x', band:true, offset:-1},
+                  y: {scale: 'y', field: 'data.y'},
+                  y2: {scale: 'y', value:0}
+                },
+                update: { fill: {field: 'data.color'}, stroke: {value: '#fff'}, strokeWidth: {value: '0.5'}}//,
+//                hover: { fill: {value: '#ededed'} }
+              }
+            }
+          ]
+        };
+        vg.parse.spec(spec, function(chart) {
+          var view = chart({el: self.$()[0], renderer: 'svg'})
+              .update();
+        });
+      }
+    });
+
     Explore.PropertyIndexView = Em.View.extend({
       didInsertElement : function(){
         var self = this;
