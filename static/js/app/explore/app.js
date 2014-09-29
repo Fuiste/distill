@@ -174,7 +174,7 @@
                   return this.top = c - e - d
                 },
                 bottom:function(){
-                  return this.bottom = $('#affix-end').outerHeight(!0);
+                  return this.bottom = $('.footer').outerHeight(!0);
                 }
               }
             })

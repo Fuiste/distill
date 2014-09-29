@@ -293,34 +293,44 @@
         <hr class="title-break" style="margin-bottom: 0">
       </div>
       <div class="row">
-        <div class="section-title col-sm-8">
-          <h2 class="title" data-effect="fadeInDown">Topics</h2>
-          <div {{action 'selectAllTopics' this}} {{bind-attr class="allSelected:selected-prompt:prompt :zoomIn :animated"}}>
-            <div class="row">
-              <div class="col-sm-12">
-                 <h4 {{bind-attr class="allSelected:color-dark:color-orange"}}><strong>All</strong></h4>
-                 <h4 {{bind-attr class="allSelected:color-dark:color-gray"}}>Reviews</h4>
+        <div class="col-sm-8">
+          <div class="section-title col-sm-12">
+            <h2 class="title" data-effect="fadeInDown">Topics</h2>
+            <div {{action 'selectAllTopics' this}} {{bind-attr class="allSelected:selected-prompt:prompt :zoomIn :animated"}}>
+              <div class="row">
+                <div class="col-sm-12">
+                   <h1 {{bind-attr class="allSelected:color-dark:color-gray"}}><strong {{bind-attr class="allSelected:color-dark:color-orange"}}>All</strong> reviews</h1>
+                </div>
               </div>
             </div>
-          </div>
-          {{#each topic in sortedTopics}}
-          <div {{action 'selectTopic' topic this}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
-            <div class="row">
-              <div class="col-sm-4">
-                 <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}><strong>Title:</strong></h4>
-                 <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{topic.name}}</h4>
-              </div>
-              <div class="col-sm-4">
-                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>Score:</strong></h4>
-                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}>{{{topic.averageScoreHtml}}}</h4>
-              </div>
-              <div class="col-sm-4">
-                <h4 {{bind-attr class="topic.selected:color-dark:color-orange"}}><strong>Reviews:</strong></h4>
-                <h4 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{{topic.reviews.length}}}</h4>
+            {{#each topic in sortedTopics}}
+            <div {{action 'selectTopic' topic this}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
+              <div class="row">
+                <div class="col-sm-9">
+                   <h1 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>{{topic.name}}</strong></h1>
+                </div>
+                <div class="col-sm-3">
+                  <h1 {{bind-attr class="topic.selected:color-dark:color-gray"}}><i {{bind-attr class="topic.selected:color-dark:color-orange :fa :fa-file-text"}}></i> {{{topic.reviews.length}}}</h1>
+                </div>
               </div>
             </div>
+            {{/each}}
           </div>
-          {{/each}}
+          <hr class="title-break" style="margin-bottom: 0">
+          <div class="row">
+            <div class="section-title col-sm-12">
+              <h2 class="title" data-effect="fadeInDown">Selected Reviews</h2>
+              {{#each review in filteredSortedReviews}}
+              <div class="prompt zoomIn animated">
+                <div class="row">
+                  <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
+                  <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
+                  <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
+                </div>
+              </div>
+              {{/each}}
+            </div>
+          </div>
         </div>
         <div class="col-sm-4">
           <div class="section-title ratings-affix">
@@ -329,35 +339,15 @@
               {{vertical-bar-chart data=distributions}}
               {{#unless allSelected}}
               <div class="selected-prompt">
-                <h4 class="color-dark">Filtered reviews below.</h4>
+                <h4 class="color-dark"><strong>{{filteredSortedReviews.length}}</strong> reviews selected.</h4>
               </div>
               {{else}}
               <div class="special-prompt">
-                <h4 class="color-orange">Reviews below.</h4>
+                <h4 class="color-gray"><strong class="color-orange">{{filteredSortedReviews.length}}</strong> reviews.</h4>
               </div>
               {{/unless}}
             </div>
           </div>
-        </div>
-      </div>
-      <hr class="title-break" style="margin-bottom: 0">
-      <div id="affix-end" class="row">
-        <div class="section-title col-sm-12">
-          <h2 class="title" data-effect="fadeInDown">Selected Reviews</h2>
-          {{#each review in filteredSortedReviews}}
-          <div class="prompt zoomIn animated">
-            <div class="row">
-              <div class="col-sm-4">
-                <h4 style="color: #b8b9bc;"><strong>Score:</strong></h4>
-                <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
-              </div>
-              <div class="col-sm-8">
-                 <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
-                 <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
-              </div>
-            </div>
-          </div>
-          {{/each}}
         </div>
       </div>
     </div>
