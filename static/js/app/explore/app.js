@@ -158,11 +158,11 @@
       }.observes('data'),
     });
 
-    Explore.PropertyIndexView = Em.View.extend({
+    Explore.PropertyView = Em.View.extend({
       didInsertElement : function(){
+        console.log("YO YO YO");
         var self = this;
         Ember.run.next(function(){
-          console.log("HI");
           setTimeout(function(){
             var b = self.$('.ratings-affix');
             b.affix({
@@ -174,7 +174,7 @@
                   return this.top = c - e - d
                 },
                 bottom:function(){
-                  return this.bottom = $('.affix-end').outerHeight(!0)
+                  return this.bottom = $('#affix-end').outerHeight(!0);
                 }
               }
             })
