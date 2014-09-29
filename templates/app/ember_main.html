@@ -307,7 +307,7 @@
             <div {{action 'selectTopic' topic this}} {{bind-attr class="topic.selected:selected-prompt:prompt :zoomIn :animated"}}>
               <div class="row">
                 <div class="col-sm-9">
-                   <h1 {{bind-attr class="topic.selected:color-dark:color-gray"}}><strong>{{topic.name}}</strong></h1>
+                   <h1 {{bind-attr class="topic.selected:color-dark:color-gray"}}>{{topic.name}}</h1>
                 </div>
                 <div class="col-sm-3">
                   <h1 {{bind-attr class="topic.selected:color-dark:color-gray"}}><i {{bind-attr class="topic.selected:color-dark:color-orange :fa :fa-file-text"}}></i> {{{topic.reviews.length}}}</h1>
