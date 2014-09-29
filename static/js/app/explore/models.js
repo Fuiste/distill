@@ -50,6 +50,7 @@ $(function(){
   e.Property = m.extend({
     name: a('string'),
     allSelected: true,
+    anyFilter: true,
     reviews: DS.hasMany('review'),
     topics: DS.hasMany('topic'),
     sortedTopics: function(){
@@ -57,8 +58,8 @@ $(function(){
     }.property('@each.topics'),
     filteredReviews: function(){
       if(this.get('allSelected')){return this.get('reviews');}
-      else{
-        revs = [];
+      else if(this.get('anyFilter')){
+        var revs = [];
         this.get('topics').forEach(function(t){
           t.get('reviews').forEach(function(r){
             if(t.get('selected')){
@@ -71,8 +72,23 @@ $(function(){
           });
         });
         return revs;
+      }else{
+        topix = [];
+        this.get('topics').forEach(function(t){if(t.get('selected')){topix.pushObject(t);}});
+        console.log(topix);
+        var revs = topix[0].get('reviews');
+        topix.forEach(function(t){
+          var newRevs = [];
+          t.get('reviews').forEach(function(tr){
+            revs.forEach(function(r){
+              if(r.get('id') == tr.get('id')){newRevs.pushObject(r);}
+            });
+          });
+          revs = newRevs;
+        });
+        return revs;
       }
-    }.property('topics.@each.selected', 'allSelected'),
+    }.property('topics.@each.selected', 'allSelected', 'anyFilter'),
     sortedReviews: function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),

@@ -10,6 +10,7 @@ from django.views.generic import View
 from app.models import *
 from middleware.ngram import find_and_init_ngrams_for_property
 from middleware.yelpspider import YelpSpider
+from middleware.ner_lib import *
 import urllib2
 from BeautifulSoup import BeautifulSoup
 
@@ -50,12 +51,25 @@ class PropertiesView(View):
         #        generate = False
         #if generate:
         #    find_and_init_ngrams_for_property(prop)
-        review_date_cutoff = 2011
-        yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
-        print "Starting Yelp spider for {0}".format(prop.name)
-        yelp_spider.start()
-        print "Yelp done!"
-        find_and_init_ngrams_for_property(prop)
+        # review_date_cutoff = 2011
+        # yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
+        # print "Starting Yelp spider for {0}".format(prop.name)
+        # yelp_spider.start()
+        # print "Yelp done!"
+        #docs = []
+        #for r in prop.reviews.all():
+        #    docs.append({"text": r.text, "id": r.id})
+        #noun_phrase_list = pos_tag_text_documents(docs)
+        #prop.topics.all().delete()
+        #for n in noun_phrase_list[:10]:
+        #    new_topic = Topic(name=n["noun_phrase"], category='NOUNPHRASE')
+        #    new_topic.save()
+        #    for rid in n["ids"]:
+        #        new_topic.reviews.add(Review.objects.get(id=rid))
+        #    new_topic.save()
+        #    prop.topics.add(new_topic)
+        #    prop.save()
+        # find_and_init_ngrams_for_property(prop)
         return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember(), "topics": prop.get_all_topic_dicts_for_ember()}), content_type="application/json")
 
     @csrf_exempt

@@ -346,6 +346,9 @@
                 <h4 class="color-gray"><strong class="color-orange">{{filteredSortedReviews.length}}</strong> reviews.</h4>
               </div>
               {{/unless}}
+              <div {{action 'anyAll' this}} {{bind-attr class="anyFilter:selected-prompt:special-prompt"}}>
+                <h4 {{bind-attr class="anyFilter:color-dark:color-gray"}}>{{#if anyFilter}}Match <strong>any</strong> topic{{else}}Match <strong class="color-orange">all</strong> topics{{/if}}</h4>
+              </div>
             </div>
           </div>
         </div>

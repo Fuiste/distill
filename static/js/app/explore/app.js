@@ -89,6 +89,10 @@
           topic.set('selected', !x);
           property.set('allSelected', false);
         },
+        anyAll: function(property){
+          var x = property.get('anyFilter');
+          property.set('anyFilter', !x);
+        },
         selectAllTopics: function(property){
           if(!property.get('allSelected')){
             property.get('topics').forEach(function(t){
