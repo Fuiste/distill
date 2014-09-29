@@ -143,6 +143,50 @@
     .selected-group .meta a {
       color: #ededed;
     }
+
+    .affix {
+      top: 10px;
+    }
+    .affix-bottom {
+      position: absolute;
+    }
+    .ratings-affix {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .ratings-affix.affix {
+      position:static;
+    }
+    .ratings-affix.affix-bottom {
+{#      padding-right: 10px;#}
+{#      margin-top: 0;#}
+{#      margin-bottom: 0;#}
+{#      width: 263px;#}
+    }
+    @media (min-width:992px) {
+{#      .bs-docs-sidebar .nav>.active>ul {#}
+{#        display: block;#}
+{#      }#}
+      .ratings-affix.affix, .ratings-affix.affix-bottom {
+        width: 320px;
+      }
+      .ratings-affix.affix {
+        position: fixed;
+        top: 20px;
+      }
+      .ratings-affix.affix-bottom {
+        position: absolute;
+      }
+{#      .ratings-affix.affix-bottom .bs-docs-sidebar.affix .bs-docs-sidenav {#}
+{#        margin-top: 0;#}
+{#        margin-bottom: 0;#}
+{#      }#}
+    }@media (min-width:1200px) {
+      .ratings-affix.affix-bottom, .ratings-affix.affix {
+        width: 370px;
+      }
+    }
+
   </style>
 </head>
 <body>

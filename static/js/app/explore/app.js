@@ -100,13 +100,17 @@
       }
     });
 
-    Explore.PropertyIndexController = Em.Controller.extend({});
+    Explore.PropertyIndexController = Em.Controller.extend({
+    });
 
     Explore.VerticalBarChartComponent = Ember.Component.extend({
       classNames: ['animated', 'fadeInDown'],
       didInsertElement: function(){
         Ember.run.once(this, 'update');
       },
+      updateContent: function(){
+        Ember.run.once(this, 'update');
+      }.observes('distributions'),
       update: function(){
         var self = this;
         var groups = this.get('data');
@@ -151,13 +155,14 @@
           var view = chart({el: self.$()[0], renderer: 'svg'})
               .update();
         });
-      }
+      }.observes('data'),
     });
 
     Explore.PropertyIndexView = Em.View.extend({
       didInsertElement : function(){
         var self = this;
         Ember.run.next(function(){
+          console.log("HI");
           setTimeout(function(){
             var b = self.$('.ratings-affix');
             b.affix({
