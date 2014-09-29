@@ -43,19 +43,19 @@ class PropertiesView(View):
         """
         prop = Property.objects.get(id=property_id)
         # Force NGRAM topics for now
-        # Uncomment for speedup, not it just runs all the time.
+        # Uncomment for speedup, now it just runs all the time.
         #generate = True
         #if len(prop.topics.all()):
         #    if prop.topics.all().category == 'NGRAM':
         #        generate = False
         #if generate:
         #    find_and_init_ngrams_for_property(prop)
-        #review_date_cutoff = 2011
-        #yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
-        #print "Starting Yelp spider for {0}".format(prop.name)
-        #yelp_spider.start()
-        #print "Yelp done!"
-        #find_and_init_ngrams_for_property(prop)
+        review_date_cutoff = 2011
+        yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
+        print "Starting Yelp spider for {0}".format(prop.name)
+        yelp_spider.start()
+        print "Yelp done!"
+        find_and_init_ngrams_for_property(prop)
         return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember(), "topics": prop.get_all_topic_dicts_for_ember()}), content_type="application/json")
 
     @csrf_exempt
