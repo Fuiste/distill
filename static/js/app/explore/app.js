@@ -57,12 +57,18 @@
           }).success(function(resp){
             self.transitionTo('processing', {queryParams: {property: resp["property_id"]}});
           });
+        },
+        loadProperty: function(property){
+          this.transitionTo('processing', {queryParams: {property: property.get('id')}});
         }
       }
     });
 
     Explore.ExploreIndexController = Em.Controller.extend({
-      yelpUrl: "TEST",
+      yelpUrl: "",
+      properties: function(){
+        return this.store.findAll('propertyMeta');
+      }.property(),
       actions: {},
     });
 

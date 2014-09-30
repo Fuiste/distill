@@ -43,13 +43,22 @@ class PropertyMetasView(View):
         Returns ember-friendly dicts for property metadata
         """
         dict_list = []
-        if property_id:
-            prop = Property.objects.get(id=property_id)
+        prop = Property.objects.get(id=property_id)
+        dict_list.append(prop.get_property_meta_dict())
+
+        return HttpResponse(json.dumps({"propertyMetas": dict_list}), content_type="application/json")
+
+
+class PropertyMetaView(View):
+
+    def get(self, request):
+        """
+        Returns ember-friendly dicts for property metadata
+        """
+        dict_list = []
+        prop_list = Property.objects.order_by('-pk')[:10]
+        for prop in prop_list:
             dict_list.append(prop.get_property_meta_dict())
-        else:
-            prop_list = Property.objects.order_by('-pk')[:10]
-            for prop in prop_list:
-                dict_list.append(prop.get_property_meta_dict())
 
         return HttpResponse(json.dumps({"propertyMetas": dict_list}), content_type="application/json")
 

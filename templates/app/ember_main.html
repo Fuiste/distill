@@ -202,7 +202,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/reviewsage-white_32.png" alt="">FreeSage</a>
+          <a style="padding: 10px;" class="navbar-brand" href="#"><img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/reviewsage-white_32.png" alt=""><strong>FreeSage</strong></a>
         </div>
       </div>
     </nav>
@@ -264,6 +264,26 @@
         <div class="input-group-btn">
           <button {{action 'submitUrl'}} class="btn btn-info">Submit</button>
         </div>
+      </div>
+    </div>
+    <hr class="title-break" style="margin-bottom: 0">
+    <div class="section-title">
+      <h4 class="subtitle">Or pick from these recently analyzed properties:</h4>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        {{#each properties}}
+          <div {{action 'loadProperty' this}} class="prompt">
+            <div class="row">
+              <div class="col-sm-9">
+                <h3 class="color-gray">{{name}}</h3>
+              </div>
+              <div class="col-sm-3">
+                <h1 class="color-gray"><i class="color-orange fa fa-file-text"></i> {{reviews}}</h1>
+              </div>
+            </div>
+          </div>
+        {{/each}}
       </div>
     </div>
   </div>
