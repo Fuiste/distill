@@ -256,7 +256,7 @@
     </div>
     <hr class="title-break" style="margin-bottom: 0">
     <div class="section-title">
-      <h4 class="subtitle">Enter the Yelp URL here:</h4>
+      <h4 class="subtitle ">Copy/paste a URL here:</h4>
     </div>
     <div class="row">
       <div class="input-group">
@@ -268,17 +268,17 @@
     </div>
     <hr class="title-break" style="margin-bottom: 0">
     <div class="section-title">
-      <h4 class="subtitle">Or pick from these recently analyzed properties:</h4>
+      <h4 class="subtitle ">Some recently analyzed places...</h4>
     </div>
     <div class="row">
       <div class="col-sm-12">
         {{#each properties}}
           <div {{action 'loadProperty' this}} class="prompt">
             <div class="row">
-              <div class="col-sm-9">
-                <h3 class="color-gray">{{name}}</h3>
+              <div class="col-sm-10">
+                <h3 class="color-gray">{{{name}}}</h3>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-2">
                 <h1 class="color-gray"><i class="color-orange fa fa-file-text"></i> {{reviews}}</h1>
               </div>
             </div>

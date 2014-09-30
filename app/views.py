@@ -27,8 +27,12 @@ class AppLandingView(View):
         print request.POST["yelp_url"]
         soup = BeautifulSoup(urllib2.urlopen(request.POST["yelp_url"]))
         print soup.title.string
-        prop = Property(name=soup.title.string, yelp_url=request.POST["yelp_url"])
-        prop.save()
+        test_l = Property.objects.filter(name=soup.title.string)
+        if len(test_l):
+            prop = test_l[0]
+        else:
+            prop = Property(name=soup.title.string, yelp_url=request.POST["yelp_url"])
+            prop.save()
         return HttpResponse(json.dumps({"property_id": prop.id}), content_type="application/json")
 
     @csrf_exempt
