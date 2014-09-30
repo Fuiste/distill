@@ -5,6 +5,11 @@ $(function(){
   var a = DS.attr;
 
   //Models
+  e.PropertyMeta = m.Extend({
+    name: a('string'),
+    reviews: a('number')
+  });
+
   e.Review = m.extend({
     text: a('string'),
     grade: a('number'),
