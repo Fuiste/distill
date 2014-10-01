@@ -239,9 +239,11 @@
 <script type="text/x-handlebars" data-template-name="processing">
   <div style="padding: 40px 0">
     <div class="prompt">
-      <h1 class="color-gray"><strong class="color-orange">We're on it!</strong> Reviews are currently being grabbed and analyzed by FreeSage <i class="fa fa-smile-o"></i></h1>
+      <h1 class="color-gray"><strong class="color-orange">We're on it!</strong> Reviews are being grabbed and analyzed.</h1>
+      <h4 class="color-gray">This could take up to 8 minutes, so here's something to pass the time.</h4>
+      <iframe width="560" height="315" src="//www.youtube.com/embed/92GHdmnDiFE?autoplay=1" frameborder="0" allowfullscreen></iframe>
     </div>
-    <div class="spinner">
+    <div class="spinner" style="margin-top: 15px;">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
@@ -255,14 +257,12 @@
       <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
       <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
     </div>
-    <hr class="title-break">
     <div class="section-title">
-      <h4 class="subtitle ">Copy/paste a Yelp URL here:</h4>
       <h4 {{bind-attr class=":subtitle badUrl::hidden"}}><strong class="color-orange">Uh-oh... That doesn't appear to be a valid Yelp URL.</strong></h4>
     </div>
     <div class="row">
       <div class="input-group">
-        {{input class="form-control" value=this.controller.yelpUrl}}
+        {{input class="form-control" placeholder="Copy/paste a Yelp URL here..." value=this.controller.yelpUrl}}
         <div class="input-group-btn">
           <button {{action 'submitUrl'}} class="btn btn-info">Submit</button>
         </div>
@@ -352,7 +352,7 @@
               <div class="prompt zoomIn animated">
                 <div class="row">
                   <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
-                  <h4 style="color: #b8b9bc;">"{{{review.text}}}"</h4>
+                  <h4 style="color: #b8b9bc;">"{{{review.displayReview}}}"</h4>
                   <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
                 </div>
               </div>

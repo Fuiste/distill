@@ -12,6 +12,7 @@ $(function(){
 
   e.Review = m.extend({
     text: a('string'),
+    displayReview: "",
     grade: a('number'),
     htmlGrade: function(){
       var grade = this.get('grade');
@@ -112,7 +113,7 @@ $(function(){
             rev = rev.replace(re, t.get('name'));
           }
         });
-        r.set('text', rev);
+        r.set('displayReview', rev);
       });
       return revs;
     }.property('filteredReviews'),

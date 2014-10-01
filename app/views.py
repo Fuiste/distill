@@ -26,6 +26,13 @@ class AppLandingView(View):
 
     def post(self, request):
         val = URLValidator()
+        url = request.POST["yelp_url"]
+        if str(url).startswith("http://m."):
+            url = url.replace("http://m.", "http://www.")
+        if str(url).startswith("www."):
+            url = url.replace("www.", "http://www.")
+        if not str(url).startswith("http://www."):
+            url = ''.join("http://www.", url)
         try:
             val(request.POST["yelp_url"])
         except ValidationError, e:
@@ -33,11 +40,12 @@ class AppLandingView(View):
         soup = BeautifulSoup(urllib2.urlopen(request.POST["yelp_url"]))
         if not "| Yelp" in soup.title.string:
             return HttpResponse(json.dumps({"property_id": -1}), content_type="application/json")
-        test_l = Property.objects.filter(name=soup.title.string)
+        propname = soup.title.string.replace("| Yelp", "")
+        test_l = Property.objects.filter(name=propname)
         if len(test_l):
             prop = test_l[0]
         else:
-            prop = Property(name=soup.title.string, yelp_url=request.POST["yelp_url"])
+            prop = Property(name=propname, yelp_url=request.POST["yelp_url"])
             prop.save()
         return HttpResponse(json.dumps({"property_id": prop.id}), content_type="application/json")
 
@@ -89,7 +97,7 @@ class PropertiesView(View):
         if len(prop.reviews.all()) == 0:
             review_date_cutoff = 2011
             yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
-            print "Starting Yelp spider for {0}".format(prop.name)
+            # print "Starting Yelp spider for {0}".format(prop.name)
             yelp_spider.start()
             print "Yelp done!"
 
@@ -100,14 +108,17 @@ class PropertiesView(View):
                 docs.append({"text": r.text, "id": r.id})
             noun_phrase_list = pos_tag_text_documents(docs)
             prop.topics.all().delete()
-            for n in noun_phrase_list[:10]:
-                new_topic = Topic(name=n["noun_phrase"], category='NOUNPHRASE')
-                new_topic.save()
-                for rid in n["ids"]:
-                    new_topic.reviews.add(Review.objects.get(id=rid))
-                new_topic.save()
-                prop.topics.add(new_topic)
-                prop.save()
+            if len(noun_phrase_list) > 10:
+                noun_phrase_list = noun_phrase_list[:10]
+            for n in noun_phrase_list:
+                if n["noun_phrase"] != "this place" and n["noun_phrase"] != "this organization" and n["noun_phrase"] != "this restaurant":
+                    new_topic = Topic(name=n["noun_phrase"], category='NOUNPHRASE')
+                    new_topic.save()
+                    for rid in n["ids"]:
+                        new_topic.reviews.add(Review.objects.get(id=rid))
+                    new_topic.save()
+                    prop.topics.add(new_topic)
+                    prop.save()
     
         # Uncomment to use NGRAM topics instead
         # find_and_init_ngrams_for_property(prop)
