@@ -56,6 +56,12 @@ $(function(){
   e.Property = m.extend({
     name: a('string'),
     allSelected: true,
+    numSelected: function(){
+      var count = 0;
+      if(this.get('allSelected')){return "All";}
+      this.get('topics').forEach(function(t){if(t.get('selected')){count++;}});
+      return count;
+    }.property('allSelected', 'topics.@each.selected'),
     anyFilter: true,
     reviews: DS.hasMany('review'),
     topics: DS.hasMany('topic'),
@@ -126,8 +132,30 @@ $(function(){
       });
       score = score / num;
       return score;
-    }.property('filteredReviews'),
+    }.property('reviews'),
     averageScoreHtml: function(){
+      var score = this.get('averageScore');
+      var html = "";
+      while(score>0.5){
+        html += "<i class='fa fa-star'></i> ";
+        score--;
+      }
+      if(score>0){
+        html += "<i class='fa fa-star-half'></i> ";
+      }
+      return html;
+    }.property('averageScore'),
+    averageFilteredScore: function(){
+      var score = 0;
+      var num = 0;
+      this.get('filteredReviews').forEach(function(r){
+        score += r.get('grade');
+        num++;
+      });
+      score = score / num;
+      return score;
+    }.property('filteredReviews'),
+    averageFilteredScoreHtml: function(){
       var score = this.get('averageScore');
       var html = "";
       while(score>0.5){

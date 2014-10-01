@@ -104,8 +104,11 @@
       actions: {
         selectTopic: function(topic, property){
           var x = topic.get('selected');
+          var allFalse = true;
           topic.set('selected', !x);
           property.set('allSelected', false);
+          property.get('topics').forEach(function(t){if(t.get('selected')){allFalse = false;}});
+          if(allFalse){property.set('allSelected', true);} 
         },
         anyAll: function(property){
           var x = property.get('anyFilter');
@@ -138,37 +141,34 @@
         var groups = this.get('data');
         var groupData = []
         groups.forEach(function(g){
-          var xAxisLabel = g.score;
+          var xAxisLabel = g.grade;
           var color = '#e09e26';
           groupData.push({x: xAxisLabel, y: g.num, color: color});
         });
-        var padding = {top: 10, left: 50, bottom: 70, right: 10};
+        var padding = {top: 0, left: 0, bottom: 0, right: 0};
         var spec = {
           padding: padding,
-          width: self.$().width() - padding.left - padding.right,
+          width: self.$().width(),
           height: 300,
-          data: [{name : 'Scores', values: groupData}],
+          data: [{name : 'Scores', values: groupData, transform: [{type: "pie", value: "data.y"}]}],
           scales: [
-            {name: 'x', type: 'ordinal', range: 'width', domain: {data: 'Scores', field: 'data.x'}},
-            {name: 'y', range: 'height', nice:true, domain: {data: 'Scores', field: 'data.y'}}
-          ],
-          axes: [
-            {type: 'x', scale: 'x', title: "Score", properties: {title: {dy: {value: 20}, fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {angle: {value: -50}, dx: {value: -20}, fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}},
-            {type: 'y', scale: 'y', title: "# of Reviews", properties: {title: {fontSize: {value: 16}, fill: {value: '#fff'}}, labels: {fill: {value: '#fff'}}, ticks: {stroke: {value: '#fff'}}, axis: {stroke: {value: '#fff'}}}}
+            {name: 'r', type: 'sqrt', range: [150, 150], domain: {data: 'Scores', field: 'data'}}
           ],
           marks: [
             {
-              type: 'rect',
+              type: 'arc',
               from: {data: 'Scores'},
               properties: {
                 enter: {
-                  x: {scale: 'x', field: 'data.x'},
-                  width: {scale: 'x', band:true, offset:-1},
-                  y: {scale: 'y', field: 'data.y'},
-                  y2: {scale: 'y', value:0}
+                  "x": {"group": "width", "mult": 0.5},
+                  "y": {"group": "height", "mult": 0.5},
+                  "startAngle": {"field": "startAngle"},
+                  "endAngle": {"field": "endAngle"},
+                  "innerRadius": {"value": 20},
+                  "outerRadius": {"scale": "r"},
+                  "stroke": {"value": "#fff"}
                 },
-                update: { fill: {field: 'data.color'}, stroke: {value: '#fff'}, strokeWidth: {value: '0.5'}}//,
-//                hover: { fill: {value: '#ededed'} }
+                update: { fill: {field: 'data.color'}, stroke: {value: '#25292c'}, strokeWidth: {value: '1'}}//,
               }
             }
           ]
