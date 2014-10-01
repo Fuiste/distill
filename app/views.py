@@ -60,7 +60,10 @@ class PropertyMetaView(View):
         Returns ember-friendly dicts for property metadata
         """
         dict_list = []
-        prop_list = Property.objects.order_by('-pk')[:10]
+        if len(Property.objects.all()) > 10:
+            prop_list = Property.objects.order_by('-pk')[:10]
+        else:
+            prop_list = Property.objects.order_by('-pk')
         for prop in prop_list:
             dict_list.append(prop.get_property_meta_dict())
 

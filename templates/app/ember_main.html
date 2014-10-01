@@ -213,6 +213,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-12">
+                  <img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/favicon/favicon-128.png">
                   {{outlet "main"}}
                 </div>
               </div>
@@ -237,8 +238,8 @@
 
 <script type="text/x-handlebars" data-template-name="processing">
   <div style="padding: 40px 0">
-    <div class="alert alert-info">
-      <strong>We're on it!</strong> Reviews are currently being grabbed and analyzed by FreeSage <i class="fa fa-smile-o"></i>
+    <div class="prompt">
+      <h1 class="color-gray"><strong class="color-orange">We're on it!</strong> Reviews are currently being grabbed and analyzed by FreeSage <i class="fa fa-smile-o"></i></h1>
     </div>
     <div class="spinner">
       <div class="bounce1"></div>
@@ -254,9 +255,9 @@
       <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
       <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
     </div>
-    <hr class="title-break" style="margin-bottom: 0">
+    <hr class="title-break">
     <div class="section-title">
-      <h4 class="subtitle ">Copy/paste a URL here:</h4>
+      <h4 class="subtitle ">Copy/paste a Yelp URL here:</h4>
     </div>
     <div class="row">
       <div class="input-group">
@@ -266,9 +267,9 @@
         </div>
       </div>
     </div>
-    <hr class="title-break" style="margin-bottom: 0">
+    <div style="margin-bottom: 20px"></div>
     <div class="section-title">
-      <h4 class="subtitle ">Some recently analyzed places...</h4>
+      <h4 class="subtitle ">...or check out some recently analyzed places below.</h4>
     </div>
     <div class="row">
       <div class="col-sm-12">
@@ -293,7 +294,7 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="section-title overview-title">
-        <h2 class="title" data-effect="fadeInDown">{{name}}</h2>
+        <h2 class="title" data-effect="fadeInDown">{{{name}}}</h2>
         <h4 class="subtitle" data-effect="fadeInUp">Reviews: <strong>{{reviews.length}}</strong></h4>
         <h4 class="subtitle" data-effect="fadeInUp">Average score: <strong style="color: #e09e26;">{{{averageScoreHtml}}}</strong></h4>
         </div>
@@ -345,7 +346,7 @@
               <div class="prompt zoomIn animated">
                 <div class="row">
                   <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
-                  <h4 style="color: #b8b9bc;">"{{review.text}}"</h4>
+                  <h4 style="color: #b8b9bc;">"{{{review.text}}}"</h4>
                   <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
                 </div>
               </div>

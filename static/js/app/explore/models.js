@@ -98,7 +98,20 @@ $(function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),
     filteredSortedReviews: function(){
-      return this.get('filteredReviews').sortBy('grade').reverse();
+      var self = this;
+      var revs = this.get('filteredReviews').sortBy('grade').reverse();
+      var rev = "";
+      revs.forEach(function(r){
+        rev = r.get('text');
+        self.get('topics').forEach(function(t){
+          if(t.get('selected') == true){
+            var re = new RegExp(t.get('name'), "gi");
+            rev = rev.replace(re, '<strong class="color-orange">' + t.get('name') + '</strong>');
+          }
+        });
+        r.set('text', rev);
+      });
+      return revs;
     }.property('filteredReviews'),
     averageScore: function(){
       var score = 0;
