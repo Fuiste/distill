@@ -2,6 +2,8 @@ from django.shortcuts import render
 import json
 import os
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -23,10 +25,14 @@ class AppLandingView(View):
         return render_to_response("app/ember_main.html", {}, context_instance=RequestContext(request))
 
     def post(self, request):
-        # prop = Property.objects.get(name="Ian's Pizza on State (fake)")
-        print request.POST["yelp_url"]
+        val = URLValidator()
+        try:
+            val(request.POST["yelp_url"])
+        except ValidationError, e:
+            return HttpResponse(json.dumps({"property_id": -1}), content_type="application/json")
         soup = BeautifulSoup(urllib2.urlopen(request.POST["yelp_url"]))
-        print soup.title.string
+        if not "| Yelp" in soup.title.string:
+            return HttpResponse(json.dumps({"property_id": -1}), content_type="application/json")
         test_l = Property.objects.filter(name=soup.title.string)
         if len(test_l):
             prop = test_l[0]

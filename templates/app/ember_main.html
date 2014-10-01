@@ -258,6 +258,7 @@
     <hr class="title-break">
     <div class="section-title">
       <h4 class="subtitle ">Copy/paste a Yelp URL here:</h4>
+      <h4 {{bind-attr class=":subtitle badUrl::hidden"}}><strong class="color-orange">Uh-oh... That doesn't appear to be a valid Yelp URL.</strong></h4>
     </div>
     <div class="row">
       <div class="input-group">
@@ -265,6 +266,11 @@
         <div class="input-group-btn">
           <button {{action 'submitUrl'}} class="btn btn-info">Submit</button>
         </div>
+      </div>
+      <div style="margin-top: 15px;" {{bind-attr class=":spinner checking::hidden"}}>
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
       </div>
     </div>
     <div style="margin-bottom: 20px"></div>

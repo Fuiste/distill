@@ -50,15 +50,25 @@
         submitUrl: function(){
           var self = this;
           var url = this.controllerFor('exploreIndex').get('yelpUrl');
+          self.controllerFor('exploreIndex').set('checking', true);
           $.ajax({
             url: '/explore',
             data: {yelp_url: url},
             type: 'POST'
           }).success(function(resp){
-            self.transitionTo('processing', {queryParams: {property: resp["property_id"]}});
+            self.controllerFor('exploreIndex').set('checking', false);
+            if(resp["property_id"]==-1){
+              self.controllerFor('exploreIndex').set('badUrl', true);
+              self.controllerFor('exploreIndex').set('yelpUrl', "");
+            }else{
+              self.controllerFor('exploreIndex').set('badUrl', false);
+              self.transitionTo('processing', {queryParams: {property: resp["property_id"]}});
+            }
           });
         },
         loadProperty: function(property){
+          this.controllerFor('exploreIndex').set('badUrl', false);
+          this.controllerFor('exploreIndex').set('checking', false);
           this.transitionTo('processing', {queryParams: {property: property.get('id')}});
         }
       }
@@ -66,6 +76,8 @@
 
     Explore.ExploreIndexController = Em.Controller.extend({
       yelpUrl: "",
+      checking: false,
+      badUrl: false,
       properties: function(){
         return this.store.findAll('propertyMeta');
       }.property(),
