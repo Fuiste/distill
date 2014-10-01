@@ -107,6 +107,9 @@ $(function(){
           if(t.get('selected') == true){
             var re = new RegExp(t.get('name'), "gi");
             rev = rev.replace(re, '<strong class="color-orange">' + t.get('name') + '</strong>');
+          } else {
+            var re = new RegExp('<strong class="color-orange">' + t.get('name') + '</strong>', "gi");
+            rev = rev.replace(re, t.get('name'));
           }
         });
         r.set('text', rev);
