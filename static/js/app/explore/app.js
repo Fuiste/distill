@@ -152,7 +152,7 @@
           height: 300,
           data: [{name : 'Scores', values: groupData, transform: [{type: "pie", value: "data.y"}]}],
           scales: [
-            {name: 'r', type: 'sqrt', range: [150, 150], domain: {data: 'Scores', field: 'data'}}
+            {name: 'r', type: 'ordinal', range: [150, 150], domain: {data: 'Scores', field: 'data'}}
           ],
           marks: [
             {
