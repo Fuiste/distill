@@ -107,11 +107,27 @@ class PropertiesView(View):
             for r in prop.reviews.all():
                 docs.append({"text": r.text, "id": r.id})
             noun_phrase_list = pos_tag_text_documents(docs)
-            prop.topics.all().delete()
-            if len(noun_phrase_list) > 10:
-                noun_phrase_list = noun_phrase_list[:10]
+            new_phrases = []
             for n in noun_phrase_list:
-                if n["noun_phrase"] != "this place" and n["noun_phrase"] != "this organization" and n["noun_phrase"] != "this restaurant":
+                if len(new_phrases):
+                    found = False
+                    for np in new_phrases:
+                        if n["noun_phrase"].split(' ')[1] == np["noun_phrase"]:
+                            found = True
+                            for i in n["ids"]:
+                                np["ids"].append(i)
+                        if len(np["noun_phrase"].split(' ')) == 2 and n["noun_phrase"].split(' ')[1] == np["noun_phrase"].split(' ')[1]:
+                            np["noun_phrase"] = n["noun_phrase"].split(' ')[1]
+                            for i in n["ids"]:
+                                np["ids"].append(i)
+                    if not found:
+                        new_phrases.append(n)
+                else:
+                    new_phrases.append(n)
+            if len(new_phrases) > 10:
+                new_phrases = new_phrases[:10]
+            for n in new_phrases:
+                if n["noun_phrase"] != "this place" and n["noun_phrase"] != "place" and n["noun_phrase"] != "this restaurant":
                     new_topic = Topic(name=n["noun_phrase"], category='NOUNPHRASE')
                     new_topic.save()
                     for rid in n["ids"]:
