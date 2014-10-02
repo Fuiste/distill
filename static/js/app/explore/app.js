@@ -142,8 +142,9 @@
         var groupData = []
         groups.forEach(function(g){
           var xAxisLabel = g.grade;
-          var color = '#e09e26';
-          groupData.push({x: xAxisLabel, y: g.num, color: color});
+          //var color = '#e09e26';
+          var colors = ['#601e00', '#803e00', '#a05e00', '#c07e06', '#e09e26'];
+          groupData.push({x: xAxisLabel, y: g.num, color: colors[g.grade-1]});
         });
         var padding = {top: 0, left: 0, bottom: 0, right: 0};
         var spec = {
@@ -164,7 +165,7 @@
                   "y": {"group": "height", "mult": 0.5},
                   "startAngle": {"field": "startAngle"},
                   "endAngle": {"field": "endAngle"},
-                  "innerRadius": {"value": 60},
+                  "innerRadius": {"value": 100},
                   "outerRadius": {"scale": "r"},
                   "stroke": {"value": "#fff"}
                 },
@@ -179,14 +180,14 @@
                 enter: {
                   "x": {"group": "width", "mult": 0.5},
                   "y": {"group": "height", "mult": 0.5},
-                  "radius": {"scale": "r", "offset": -40},
+                  "radius": {"scale": "r", "offset": -70},
                   "theta": {"field": "midAngle"},
                   "fill": {"value": "#fff"},
                   "align": {"value": "center"},
                   "baseline": {"value": "middle"},
                   "text": {"field": "data.y"}
                 },
-                update: { fill: {field: 'data.color'}, stroke: {value: '#25292c'}, strokeWidth: {value: '1'}}//,
+                update: { fill: {field: 'data.color'}, stroke: {value: '#b8b9bc'}, strokeWidth: {value: '1'}}//,
               }
             }
           ]
