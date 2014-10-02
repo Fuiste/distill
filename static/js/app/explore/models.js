@@ -119,6 +119,8 @@ $(function(){
             rev = rev.replace(re, t.get('name'));
           }
         });
+        var ren = new RegExp("\n", "g");
+        rev = rev.replace(ren, "<br>");
         r.set('displayReview', rev);
       });
       return revs;

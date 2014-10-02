@@ -287,7 +287,7 @@
     <div class="row">
       <div class="col-sm-12">
         {{#each properties}}
-          <div {{action 'loadProperty' this}} class="prompt">
+          <div {{action 'loadProperty' this}} class="prompt zoomIn animated">
             <div class="row">
               <div class="col-sm-10">
                 <h3 class="color-gray">{{{name}}}</h3>
@@ -333,10 +333,9 @@
               <h2 class="title" data-effect="fadeInDown">Selected Reviews</h2>
               {{#each review in filteredSortedReviews}}
               <div class="prompt zoomIn animated">
-                <div class="row">
-                  <h4 style="color: #e09e26;"><strong>Review text:</strong></h4>
-                  <h4 style="color: #b8b9bc;">"{{{review.displayReview}}}"</h4>
-                  <h4 style="color: #e09e26;">{{{review.htmlGrade}}}</h4>
+                <div class="row" style="margin-left: 15px; margin-right: 15px;">
+                  <h4 style="text-align: right; color: #e09e26;">{{{review.htmlGrade}}}</h4>
+                  <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayReview}}}</h4>
                 </div>
               </div>
               {{/each}}
@@ -348,6 +347,9 @@
             <h2 class="title" data-effect="fadeInDown">Score Breakdown</h2>
             <div class="prompt">
               {{vertical-bar-chart data=distributions}}
+              <div class="row">
+                <h4 class="color-gray"><span style="color: #601e00;"><i class='fa fa-star'></i></span> - <span style="color: #803e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #a05e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #c07e06"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #e09e26;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span></h4>
+              </div>
               <div class="row">
                 <h4 class="col-sm-4 color-gray"><i class="color-orange fa fa-file-text"></i> {{filteredSortedReviews.length}}</h4>
                 <h4 class="col-sm-4 color-orange">{{{averageFilteredScoreHtml}}}</h4>
