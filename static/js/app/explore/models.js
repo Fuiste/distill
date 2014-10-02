@@ -12,6 +12,10 @@ $(function(){
 
   e.Review = m.extend({
     text: a('string'),
+    displayText: function(){
+      var ren = new RegExp("\n", "g");
+      return this.get('text').replace(ren, "<br>");
+    }.property('text'),
     displayReviews: [],
     grade: a('number'),
     htmlGrade: function(){
@@ -100,7 +104,7 @@ $(function(){
         });
         return revs;
       }
-    }.property('topics.@each.selected', 'allSelected', 'anyFilter'),
+    }.property('topics.@each.selected', 'allSelected', 'anyFilter', 'reviews'),
     sortedReviews: function(){
       return this.get('reviews').sortBy('grade').reverse();
     }.property('reviews'),
@@ -121,11 +125,17 @@ $(function(){
         });
         var ren = new RegExp("\n", "g");
         rev = rev.replace(ren, "<br>");
-        pointsArr = [];
-        rev.match( /[^\.!\?]+[\.!\?]+/g ).forEach(function(s){
-          console.log(s);
-          if(s.indexOf('<strong ') != -1){pointsArr.pushObject(s);}
-        });
+        var pointsArr = [];
+        var tmpArr = rev.match( /[^\.!\?]+[\.!\?]+/g )
+        if(tmpArr){
+          tmpArr.forEach(function(s){
+            ren = new RegExp("<br>", "g");
+            if(s.indexOf('<strong ') != -1){
+              s = s.replace(ren, " ");
+              pointsArr.pushObject(s);
+            }
+          });
+        }
         
         r.set('displayReviews', pointsArr);
       });
