@@ -341,7 +341,7 @@
               <div {{action 'showFullReview' review this}} {{bind-attr class="review.show:selected-prompt:prompt :zoomIn :animated"}}>
                 <div class="row" style="margin-left: 15px; margin-right: 15px;">
                   <h4 {{bind-attr class=":pull-left review.show:color-dark:color-gray"}}><strong>{{review.date}}</strong></h4> 
-                  <h4 {{bind-attr class=":pull-right review.show:color-dark:color-orange"}}>{{{review.htmlGrade}}}</h4>
+                  <h4 {{bind-attr class=":pull-right review.show:color-dark:color-orange"}} {{bind-attr style=review.colorGrade}}>{{{review.htmlGrade}}}</h4>
                   <div class="clearfix"></div>
                   {{#if allSelected}}
                   <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayText}}}</h4>

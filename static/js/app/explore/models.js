@@ -21,6 +21,11 @@ $(function(){
     }.property('text'),
     displayReviews: [],
     grade: a('number'),
+    colorGrade: function(){
+      var colors = ['#601e00', '#803e00', '#a05e00', '#c07e06', '#e09e26'];
+      var grade = this.get('grade');
+      return "color: " + colors[grade-1];
+    }.property('grade'),
     htmlGrade: function(){
       var grade = this.get('grade');
       var html = "";
