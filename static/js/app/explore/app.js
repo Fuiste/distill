@@ -119,13 +119,35 @@
             property.get('topics').forEach(function(t){
               t.set('selected', false);
             });
+            property.get('reviews').forEach(function(r){
+              r.set('show', false);
+            });
             property.set('allSelected', true);
           }
-        }
+        },
+        showFullReview: function(review, property){
+          var alls = property.get('allSelected');
+          var x = review.get('show');
+          if(!alls){
+            review.set('show', !x);
+            console.log(review.get('show'));
+          }
+        },
       }
     });
 
     Explore.PropertyIndexController = Em.Controller.extend({
+      init: function() {
+        var view = this;
+        var resizeHandler = function() {
+          view.rerender();
+        };
+        this.set('resizeHandler', resizeHandler);
+          $(window).bind('resize', this.get('resizeHandler'));
+        },
+      willDestroy: function() {
+        $(window).unbind('resize', this.get('resizeHandler'));
+      },
     });
 
     Explore.VerticalBarChartComponent = Ember.Component.extend({

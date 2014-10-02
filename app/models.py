@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import time
 
 # Create your models here.
 class Review(models.Model):
@@ -11,7 +12,7 @@ class Review(models.Model):
     created_date = models.DateTimeField(default=timezone.now(), null=False)
 
     def get_ember_dict(self):
-        return {"text": self.text, "grade": self.grade, "id": self.id}
+        return {"text": self.text, "grade": self.grade, "date": self.created_date.strftime('%Y-%m-%d'), "timestamp": time.mktime(self.created_date.timetuple()), "id": self.id}
 
 
 class Topic(models.Model):

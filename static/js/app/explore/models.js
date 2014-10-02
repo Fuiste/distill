@@ -12,6 +12,9 @@ $(function(){
 
   e.Review = m.extend({
     text: a('string'),
+    date: a('string'),
+    show: false,
+    timestamp: a('number'),
     displayText: function(){
       var ren = new RegExp("\n", "g");
       return this.get('text').replace(ren, "<br>");
@@ -110,7 +113,7 @@ $(function(){
     }.property('reviews'),
     filteredSortedReviews: function(){
       var self = this;
-      var revs = this.get('filteredReviews').sortBy('grade').reverse();
+      var revs = this.get('filteredReviews').sortBy('timestamp').reverse();
       var rev = "";
       revs.forEach(function(r){
         rev = r.get('text');
