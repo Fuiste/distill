@@ -120,7 +120,7 @@
               t.set('selected', false);
             });
             property.set('allSelected', true);
-          }else{property.set('allSelected', false);}
+          }
         }
       }
     });
@@ -164,9 +164,27 @@
                   "y": {"group": "height", "mult": 0.5},
                   "startAngle": {"field": "startAngle"},
                   "endAngle": {"field": "endAngle"},
-                  "innerRadius": {"value": 20},
+                  "innerRadius": {"value": 60},
                   "outerRadius": {"scale": "r"},
                   "stroke": {"value": "#fff"}
+                },
+                update: { fill: {field: 'data.color'}, stroke: {value: '#25292c'}, strokeWidth: {value: '1'}},
+                "hover": {"fill": {"value": "#b8b9bc"}}
+              }
+            },
+            {
+              type: 'text',
+              from: {data: 'Scores'},
+              properties: {
+                enter: {
+                  "x": {"group": "width", "mult": 0.5},
+                  "y": {"group": "height", "mult": 0.5},
+                  "radius": {"scale": "r", "offset": -40},
+                  "theta": {"field": "midAngle"},
+                  "fill": {"value": "#fff"},
+                  "align": {"value": "center"},
+                  "baseline": {"value": "middle"},
+                  "text": {"field": "data.y"}
                 },
                 update: { fill: {field: 'data.color'}, stroke: {value: '#25292c'}, strokeWidth: {value: '1'}}//,
               }
