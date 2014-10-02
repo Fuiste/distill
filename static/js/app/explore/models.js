@@ -12,7 +12,7 @@ $(function(){
 
   e.Review = m.extend({
     text: a('string'),
-    displayReview: "",
+    displayReviews: [],
     grade: a('number'),
     htmlGrade: function(){
       var grade = this.get('grade');
@@ -121,7 +121,13 @@ $(function(){
         });
         var ren = new RegExp("\n", "g");
         rev = rev.replace(ren, "<br>");
-        r.set('displayReview', rev);
+        pointsArr = [];
+        rev.match( /[^\.!\?]+[\.!\?]+/g ).forEach(function(s){
+          console.log(s);
+          if(s.indexOf('<strong ') != -1){pointsArr.pushObject(s);}
+        });
+        
+        r.set('displayReviews', pointsArr);
       });
       return revs;
     }.property('filteredReviews'),

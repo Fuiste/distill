@@ -330,12 +330,18 @@
         <div class="col-sm-6">
           <div class="row">
             <div class="section-title col-sm-12">
-              <h2 class="title" data-effect="fadeInDown">Selected Reviews</h2>
+              <h2 class="title" data-effect="fadeInDown">{{#unless allSelected}}Talking Points{{else}}Reviews{{/unless}}</h2>
               {{#each review in filteredSortedReviews}}
               <div class="prompt zoomIn animated">
                 <div class="row" style="margin-left: 15px; margin-right: 15px;">
                   <h4 style="text-align: right; color: #e09e26;">{{{review.htmlGrade}}}</h4>
-                  <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayReview}}}</h4>
+                  {{#if allSelected}}
+                  <h4 style="text-align: left;color: #b8b9bc;">{{{review.text}}}</h4>
+                  {{else}}
+                  {{#each text in review.displayReviews}}
+                  <h4 style="text-align: left;color: #b8b9bc;">{{{text}}}</h4>
+                  {{/each}}
+                  {{/if}}
                 </div>
               </div>
               {{/each}}
@@ -358,12 +364,14 @@
               <div {{action 'selectAllTopics' this}} {{bind-attr class=":row allSelected:selected-group"}}>
                 <h4 {{bind-attr class="allSelected:color-dark:color-gray :col-sm-12"}}><strong {{bind-attr class="allSelected:color-dark:color-orange"}}>All</strong> topics</h4>
               </div>
+              <div style="max-height: 250px; overflow-y: scroll; overflow-x: hidden;">
               {{#each topic in sortedTopics}}
               <div {{action 'selectTopic' topic this}} {{bind-attr class=":row topic.selected:selected-group"}}>
                 <h4 {{bind-attr class=":col-sm-6 topic.selected:color-dark:color-gray"}}><strong>{{topic.name}}</strong></h4>
                 <h4 {{bind-attr class=":col-sm-6 topic.selected:color-dark:color-gray"}}><i {{bind-attr class="topic.selected:color-dark:color-orange :fa :fa-file-text"}}></i> {{topic.reviews.length}}</h4>
               </div>
               {{/each}}
+              </div>
               <div {{action 'anyAll' this}} {{bind-attr class="anyFilter:selected-prompt:special-prompt :hidden"}}>
                 <h4 {{bind-attr class="anyFilter:color-dark:color-gray"}}>{{#if anyFilter}}Match <strong>any</strong> topic{{else}}Match <strong class="color-orange">all</strong> topics{{/if}}</h4>
               </div>
