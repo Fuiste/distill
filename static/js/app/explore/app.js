@@ -144,7 +144,7 @@
           var xAxisLabel = g.grade;
           //var color = '#e09e26';
           var colors = ['#601e00', '#803e00', '#a05e00', '#c07e06', '#e09e26'];
-          groupData.push({x: xAxisLabel, y: g.num, color: colors[g.grade-1]});
+          if (g.num != 0){groupData.push({x: xAxisLabel, y: g.num, color: colors[g.grade-1]});}
         });
         var padding = {top: 0, left: 0, bottom: 0, right: 0};
         var spec = {

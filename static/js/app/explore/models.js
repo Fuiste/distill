@@ -156,7 +156,7 @@ $(function(){
       return score;
     }.property('filteredReviews'),
     averageFilteredScoreHtml: function(){
-      var score = this.get('averageScore');
+      var score = this.get('averageFilteredScore');
       var html = "";
       while(score>0.5){
         html += "<i class='fa fa-star'></i> ";
@@ -166,7 +166,7 @@ $(function(){
         html += "<i class='fa fa-star-half'></i> ";
       }
       return html;
-    }.property('averageScore'),
+    }.property('averageFilteredScore'),
     distributions: function(){
       var total = 0;
       var dists = [
