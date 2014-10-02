@@ -339,21 +339,29 @@
               {{#unless allSelected}}<h4 class="subtitle">Click to read more.</h4>{{/unless}}
               {{#each review in filteredSortedReviews}}
               <div {{action 'showFullReview' review this}} {{bind-attr class="review.show:selected-prompt:prompt :zoomIn :animated"}}>
-                <div class="row" style="margin-left: 15px; margin-right: 15px;">
-                  <h4 {{bind-attr class=":pull-left review.show:color-dark:color-gray"}}><strong>{{review.date}}</strong></h4> 
-                  <h4 {{bind-attr class=":pull-right review.show:color-dark:color-orange"}} {{bind-attr style=review.colorGrade}}>{{{review.htmlGrade}}}</h4>
-                  <div class="clearfix"></div>
-                  {{#if allSelected}}
-                  <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayText}}}</h4>
-                  {{else}}
-                  {{#if review.show}}
-                  <h4 class="color-dark" style="text-align: left;">{{{review.displayText}}}</h4>
-                  {{else}}
-                  {{#each text in review.displayReviews}}
-                  <h4 style="text-align: left;color: #b8b9bc;">{{{text}}}</h4>
-                  {{/each}}
-                  {{/if}}
-                  {{/if}}
+                <div>
+                  <div class="special-group" style="padding-left: 15px; padding-right: 15px;">
+                    <h4 {{bind-attr class=":pull-left review.show:color-dark:color-gray"}}><strong>{{review.date}}</strong></h4> 
+                    {{#if review.show}}
+                    <h4 class="pull-right color-dark">{{{review.htmlGrade}}}</h4>
+                    {{else}}
+                    <h4 class="pull-right" {{bind-attr style=review.colorGrade}}>{{{review.htmlGrade}}}</h4>
+                    {{/if}}
+                    <div class="clearfix"></div>
+                  </div>
+                  <div style="margin-left: 15px; margin-right: 15px;">
+                    {{#if allSelected}}
+                    <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayText}}}</h4>
+                    {{else}}
+                    {{#if review.show}}
+                    <h4 class="color-dark" style="text-align: left;">{{{review.displayText}}}</h4>
+                    {{else}}
+                    {{#each text in review.displayReviews}}
+                    <h4 style="text-align: left;color: #b8b9bc;">{{{text}}}</h4>
+                    {{/each}}
+                    {{/if}}
+                    {{/if}}
+                  </div>
                 </div>
               </div>
               {{/each}}
