@@ -335,8 +335,8 @@
         <div class="col-sm-6">
           <div class="row">
             <div class="section-title col-sm-12">
-              <h2 class="title" data-effect="fadeInDown">{{#unless allSelected}}Talking Points{{else}}Reviews{{/unless}}</h2>
-              {{#unless allSelected}}<h4 class="subtitle">Click to read more.</h4>{{/unless}}
+              <h2 class="title" data-effect="fadeInDown">Talking Points</h2>
+              <h4 class="subtitle">Click to read more.</h4>
               {{#each review in filteredSortedReviews}}
               <div {{action 'showFullReview' review this}} {{bind-attr class="review.show:selected-prompt:prompt :zoomIn :animated"}}>
                 <div>
@@ -350,16 +350,12 @@
                     <div class="clearfix"></div>
                   </div>
                   <div style="margin-left: 15px; margin-right: 15px;">
-                    {{#if allSelected}}
-                    <h4 style="text-align: left;color: #b8b9bc;">{{{review.displayText}}}</h4>
-                    {{else}}
                     {{#if review.show}}
                     <h4 class="color-dark" style="text-align: left;">{{{review.displayText}}}</h4>
                     {{else}}
                     {{#each text in review.displayReviews}}
                     <h4 style="text-align: left;color: #b8b9bc;">{{{text}}}</h4>
                     {{/each}}
-                    {{/if}}
                     {{/if}}
                   </div>
                 </div>
@@ -381,6 +377,7 @@
               <div class="row">
                 <h4 class="color-gray"><span style="color: #601e00;"><i class='fa fa-star'></i></span> - <span style="color: #803e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #a05e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #c07e06"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #e09e26;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span></h4>
               </div>
+              <h4 class="color-gray">Click a topic below to read more!</h4>
               <div class="special-group" style="max-height: 250px; overflow-y: scroll; overflow-x: hidden;">
                 <div {{action 'selectAllTopics' this}} {{bind-attr class=":row allSelected:selected-group"}}>
                   <h4 {{bind-attr class="allSelected:color-dark:color-gray :col-sm-12"}}><strong {{bind-attr class="allSelected:color-dark:color-orange"}}>All</strong> topics</h4>

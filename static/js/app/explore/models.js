@@ -123,7 +123,7 @@ $(function(){
       revs.forEach(function(r){
         rev = r.get('text');
         self.get('topics').forEach(function(t){
-          if(t.get('selected') == true){
+          if(t.get('selected') == true || self.get('allSelected') == true){
             var re = new RegExp(t.get('name'), "gi");
             rev = rev.replace(re, '<strong class="color-orange">' + t.get('name') + '</strong>');
           } else {

@@ -126,12 +126,9 @@
           }
         },
         showFullReview: function(review, property){
-          var alls = property.get('allSelected');
           var x = review.get('show');
-          if(!alls){
-            review.set('show', !x);
-            console.log(review.get('show'));
-          }
+          review.set('show', !x);
+          console.log(review.get('show'));
         },
       }
     });
