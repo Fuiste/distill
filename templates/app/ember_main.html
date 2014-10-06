@@ -199,13 +199,13 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#reviewsage-navbar-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a style="padding: 10px;" class="navbar-brand" href="#"><img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/reviewsage-white_32.png" alt=""><strong>distill.io</strong></a>
+          <a style="font-size: 45px;" class="navbar-brand" href="#"><strong>dis</strong>till</a>
         </div>
       </div>
     </nav>
@@ -216,7 +216,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-12">
-                  <img src="https://s3-us-west-2.amazonaws.com/reviewsage-static/img/favicon/favicon-128.png">
+                  <h1 style="font-size:100px" class="color-orange"><strong class="color-gray">dis</strong>till</h1>
                   {{outlet "main"}}
                 </div>
               </div>
@@ -265,7 +265,6 @@
 <div class="row">
   <div style="padding: 40px 0">
     <div id="initial-title" class="section-title">
-      <h2 class="title" data-effect="fadeInDown">LET'S GO</h2>
       <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
     </div>
     <div class="section-title">
@@ -334,7 +333,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xs-12 col-md-6 col-sm-8">
           <div class="row">
             <div class="section-title col-sm-12">
               <h2 class="title" data-effect="fadeInDown">Talking Points</h2>
@@ -369,18 +368,20 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
+        <div class="sidebar-offcanvas hidden-xs col-sm-4 col-md-6">
           <div class="section-title ratings-affix">
             <h2 class="title" data-effect="fadeInDown">Score Breakdown</h2>
             <div class="prompt" style="padding-top: 4px;">
               <div class="row" style="margin-bottom:20px;">
-                <h4 class="col-sm-4 color-gray"><i class="color-orange fa fa-file-text"></i> {{filteredSortedReviews.length}}</h4>
-                <h4 class="col-sm-4 color-orange">{{{averageFilteredScoreHtml}}}</h4>
-                <h4 class="col-sm-4 color-gray"><strong class="color-orange">Topics: </strong> {{numSelected}}</h4>
+                <h4 class="col-md-4 hidden-sm hidden-xs color-gray"><i class="color-orange fa fa-file-text"></i> {{filteredSortedReviews.length}}</h4>
+                <h4 class="col-sm-12 col-md-4 color-orange">{{{averageFilteredScoreHtml}}}</h4>
+                <h4 class="col-md-4 hidden-sm hidden-xs color-gray"><strong class="color-orange">Topics: </strong> {{numSelected}}</h4>
               </div>
-              {{vertical-bar-chart data=distributions}}
-              <div class="row">
-                <h4 class="color-gray"><span style="color: #601e00;"><i class='fa fa-star'></i></span> - <span style="color: #803e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #a05e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #c07e06"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #e09e26;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span></h4>
+              <div class="hidden-sm">
+                {{vertical-bar-chart data=distributions}}
+                <div class="row">
+                  <h4 class="color-gray"><span style="color: #601e00;"><i class='fa fa-star'></i></span> - <span style="color: #803e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #a05e00;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #c07e06"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span> - <span style="color: #e09e26;"><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i></span></h4>
+                </div>
               </div>
               <h4 class="color-gray">Click a topic below to read more!</h4>
               <div class="special-group" style="max-height: 250px; overflow-y: scroll; overflow-x: hidden;">

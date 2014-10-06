@@ -1,5 +1,9 @@
 !function ($, _H, Em, d3, vg) {
 
+  $('[data-toggle=offcanvas]').click(function() {
+    $('.row-offcanvas').toggleClass('active');
+  });
+
   $('#ratings-affix').affix({
     offset: {
       top: 100
@@ -137,7 +141,7 @@
       init: function() {
         var view = this;
         var resizeHandler = function() {
-          view.rerender();
+          //view.rerender();
         };
         this.set('resizeHandler', resizeHandler);
           $(window).bind('resize', this.get('resizeHandler'));
