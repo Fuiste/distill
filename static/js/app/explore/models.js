@@ -15,6 +15,10 @@ $(function(){
     date: a('string'),
     show: false,
     timestamp: a('number'),
+    noTopicsDisplayText: function(){
+      var tmpArr = this.get('text').match( /[^\.!\?]+[\.!\?]+/g );
+      //RETURN SHIT BUT FADE OUT YO.
+    }.property('text'),
     displayText: function(){
       var ren = new RegExp("\n", "g");
       return this.get('text').replace(ren, "<br>");
@@ -134,7 +138,7 @@ $(function(){
         var ren = new RegExp("\n", "g");
         rev = rev.replace(ren, "<br>");
         var pointsArr = [];
-        var tmpArr = rev.match( /[^\.!\?]+[\.!\?]+/g )
+        var tmpArr = rev.match( /[^\.!\?]+[\.!\?]+/g );
         if(tmpArr){
           tmpArr.forEach(function(s){
             ren = new RegExp("<br>", "g");
