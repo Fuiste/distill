@@ -16,6 +16,7 @@ gunicorn==19.1.1
 jdcal==1.0
 ner==0.1
 nltk==2.0.4
+numpy==1.8.0
 openpyxl==2.0.5
 patterns==0.3
 psycopg2==2.5.3
@@ -23,6 +24,7 @@ python-dateutil==2.2
 python-mimeparse==0.1.4
 redis==2.10.3
 rq==0.4.6
+scipy==0.14.0
 six==1.7.3
 static3==0.5.1
 wsgiref==0.1.2
