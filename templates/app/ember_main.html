@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>distill.io</title>
+  <title>distill, data-driven dining</title>
   <meta charset="UTF-8" />
   <meta name="description" content="{% block description %}{% endblock %}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -26,6 +26,14 @@
   <script src="{{STATIC_URL}}js/app/explore/app.js"></script>
   <script src="{{STATIC_URL}}js/app/explore/models.js"></script>
   <style>
+
+    .section-wrapper {
+      background: url('https://s3-us-west-2.amazonaws.com/reviewsage-static/img/new_homepage/awhCbhLqRceCdjcPQUnn_IMG_0249.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center; 
+      background-size: 2500px 1500px;
+    }
     .btn-file {
       position: relative;
       overflow: hidden;
@@ -215,7 +223,7 @@
           <div class="section-inner">
             <div class="container">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 special-prompt">
                   <h1 style="font-size:100px" class="color-orange"><strong class="color-gray">dis</strong>till</h1>
                   {{outlet "main"}}
                 </div>
@@ -265,16 +273,17 @@
 <div class="row">
   <div style="padding: 40px 0">
     <div id="initial-title" class="section-title">
+      <h2 class="title">Let's Eat</h2>
       <h4 class="subtitle" data-effect="fadeInUp">Send us a restaurant <span class="main-color">URL</span> and we'll make sense of their online presence.</h4>
     </div>
     <div class="section-title">
       <h4 {{bind-attr class=":subtitle badUrl::hidden"}}><strong class="color-orange">Uh-oh... That doesn't appear to be a valid Yelp URL.</strong></h4>
     </div>
     <div class="row">
-      <div class="input-group">
+      <div class="input-group" style="width:70%; margin: 0 auto; float: none;">
         {{input class="form-control" placeholder="Copy/paste a Yelp URL here..." value=this.controller.yelpUrl}}
         <div class="input-group-btn">
-          <button {{action 'submitUrl'}} class="btn btn-info">Submit</button>
+          <button {{action 'submitUrl'}} class="btn btn-warning">I'm hungry!</button>
         </div>
       </div>
       <div style="margin-top: 15px;" {{bind-attr class=":spinner checking::hidden"}}>
