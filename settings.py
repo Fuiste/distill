@@ -44,10 +44,13 @@ MIDDLEWARE_CLASSES = (
     'middleware.warning_exception_middleware.ProcessExceptionMiddleware',
 )
 
+print "MIDDLEWARE GOOD"
+
 ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'freesage.wsgi.application'
 
+print "WSGI GOOD"
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -61,8 +64,9 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-
 }
+
+print "DATABASES GOOD"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -125,6 +129,8 @@ EXTERNAL_APPS = [
     'tastypie',
 ]
 
+print "APPS GOOD"
+
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS
 
 import dj_database_url
@@ -132,3 +138,5 @@ import dj_database_url
 db_config =  dj_database_url.config()
 if db_config:
     DATABASES["default"] = db_config
+
+print "DJ_DATABASE_GOOD"
