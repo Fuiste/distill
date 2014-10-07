@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>distill, data-driven dining</title>
+  <title>distill</title>
   <meta charset="UTF-8" />
   <meta name="description" content="{% block description %}{% endblock %}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -266,6 +266,14 @@
 
 <script type="text/x-handlebars" data-template-name="explore/index">
 <div class="row">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-1"><h4 class="color-gray">data</h4></div>
+  <div class="col-sm-2"><h4 class="color-gray">driven</h4></div>
+  <div class="col-sm-1"><h4 class="color-orange"><strong>dinner</strong></h4></div>
+  <div class="col-sm-4"></div>
+</div>
+
+<div class="row">
   <div style="padding: 40px 0">
     <div class="prompt">
       <div id="initial-title" class="section-title">
@@ -300,10 +308,10 @@
           <div {{action 'loadProperty' this}} class="prompt zoomIn animated">
             <div class="row">
               <div class="col-sm-10">
-                <h3 class="color-gray">{{{name}}}</h3>
+                <h4 class="color-gray">{{{name}}}</h4>
               </div>
               <div class="col-sm-2">
-                <h3 class="color-gray"><i class="color-orange fa fa-file-text"></i> {{reviews}}</h1>
+                <h4 class="color-gray"><i class="color-orange fa fa-file-text"></i> {{reviews}}</h4>
               </div>
             </div>
           </div>
