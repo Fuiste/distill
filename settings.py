@@ -125,3 +125,9 @@ EXTERNAL_APPS = [
 ]
 
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS
+
+import dj_database_url
+
+db_config =  dj_database_url.config()
+if db_config:
+    DATABASES["default"] = db_config
