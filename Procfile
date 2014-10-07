@@ -1,1 +1,1 @@
-web: freesage.wsgi
+web: gunicorn freesage.wsgi
