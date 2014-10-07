@@ -1,0 +1,1 @@
+web: freesage.wsgi
