@@ -34,7 +34,7 @@ def pos_tag_text_documents(text_documents):
         sentences = re.split(r' *[\.\?!][\'"\)\]]* *', doc["text"])
         for s in sentences:
             formatted_text.append({"text": s.lower(), "review_id": doc["id"]})
-    tagger = ner.SocketNER(host='http://distill.herokuapp.com', port=8080)
+    tagger = ner.SocketNER(host='http://distill-server.herokuapp.com', port=8080)
     doc_copy = []
     # maps noun phrases to their documents
     noun_phrase_map = {}
