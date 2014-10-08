@@ -87,7 +87,7 @@ USE_TZ = True
 
 # STATIC_URL = os.environ.get("DJANGO_STATIC_URL", "/static/")
 
-STATIC_URL = '/static'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = "staticfiles"
 
