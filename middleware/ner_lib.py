@@ -14,6 +14,7 @@ __author__ = "MDee"
 
 middleware_dir = os.path.dirname(__file__)
 st = StanfordParser(middleware_dir + "/stanford_parser/stanford-parser.jar", middleware_dir + "/stanford_parser/stanford-models.jar")
+print middleware_dir + "/stanford_parser/stanford-parser.jar"
 
 
 # Old noun phrase extraction method.
