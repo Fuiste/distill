@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import re
-from nltk.tag.stanford import NERTagger
+from nltk.parse.stanford import StanfordParser
 import os
 import threading
 from middleware.text_format import replace_special_chars_in_text
 import ner
+from nltk.tree import *
 
 threading._DummyThread._Thread__stop = lambda x: 42
 
@@ -12,10 +13,10 @@ threading._DummyThread._Thread__stop = lambda x: 42
 __author__ = "MDee"
 
 middleware_dir = os.path.dirname(__file__)
-#st = NERTagger(middleware_dir + "/stanford_ner_files/english.all.3class.distsim.crf.ser.gz",
-#               middleware_dir + "/stanford_ner_files/stanford-ner.jar")
+st = StanfordParser(middleware_dir + "/stanford_parser/stanford-parser.jar", middleware_dir + "/stanford_parser/stanford-models.jar")
 
 
+# Old noun phrase extraction method.
 def extract_noun_phrases(pos_str):
     new_noun_phrase_regex = r"\(NP\s(?P<noun_phrase>(\([A-Z\$]+\s\w{4,}\)(\s)?)+)\)"
     pos_regex = r"(((\s)?\([A-Z\$]+)|(\)(\s)?))"
@@ -28,19 +29,40 @@ def extract_noun_phrases(pos_str):
     return noun_phrases
 
 
+# Extract phrases from a parsed (chunked) tree
+# Phrase = tag for the string phrase (sub-tree) to extract
+# Returns: List of deep copies;  Recursive
+def ExtractPhrases( myTree, phrase):
+    myPhrases = []
+    if (myTree.label() == phrase):
+        myPhrases.append( myTree.copy(True) )
+    for child in myTree:
+        if (type(child) is Tree):
+            list_of_phrases = ExtractPhrases(child, phrase)
+            if (len(list_of_phrases) > 0):
+                phrase_strings = []
+                for ph in list_of_phrases:
+                    np_strs = extract_noun_phrases(str(ph))
+                    # phrase_strings.append(' '.join(ph.leaves()))
+                    phrase_strings.extend(np_strs)
+                myPhrases.extend(phrase_strings)
+    return myPhrases
+
+
 def pos_tag_text_documents(text_documents):
     formatted_text = []#replace_special_chars_in_text(text_documents=text_documents, lowercase=False)
     for doc in text_documents:
         sentences = re.split(r' *[\.\?!][\'"\)\]]* *', doc["text"])
         for s in sentences:
             formatted_text.append({"text": s.lower(), "review_id": doc["id"]})
-    tagger = ner.SocketNER(host='http://distill-server.herokuapp.com', port=8080)
+    # tagger = ner.SocketNER(host='http://distill-server.herokuapp.com', port=8080)
     doc_copy = []
     # maps noun phrases to their documents
     noun_phrase_map = {}
     for index, td in enumerate(formatted_text):
-        pos_str = tagger.tag_text("parse " + td["text"])
-        noun_phrases = extract_noun_phrases(pos_str)
+        pos_str = st.raw_parse(td["text"])
+        if pos_str:
+            noun_phrases = ExtractPhrases(pos_str[0], 'NP')
         if noun_phrases:
             for p in noun_phrases:
                 if p not in noun_phrase_map:
