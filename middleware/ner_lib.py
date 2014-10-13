@@ -14,7 +14,6 @@ __author__ = "MDee"
 
 middleware_dir = os.path.dirname(__file__)
 st = StanfordParser(middleware_dir + "/stanford_parser/stanford-parser.jar", middleware_dir + "/stanford_parser/stanford-models.jar")
-print middleware_dir + "/stanford_parser/stanford-parser.jar"
 
 
 # Old noun phrase extraction method.
@@ -51,6 +50,7 @@ def ExtractPhrases( myTree, phrase):
 
 
 def pos_tag_text_documents(text_documents):
+    print middleware_dir + "/stanford_parser/stanford-parser.jar"
     formatted_text = []#replace_special_chars_in_text(text_documents=text_documents, lowercase=False)
     for doc in text_documents:
         sentences = re.split(r' *[\.\?!][\'"\)\]]* *', doc["text"])
