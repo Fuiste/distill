@@ -75,12 +75,16 @@ def pos_tag_text_documents(text_documents):
         else:
             formatted_cuts.append([t])
     noun_phrases = []
+    total_c = len(formatted_text)
+    cur_c = 0
     for cut in formatted_cuts:
         request_object = urllib2.Request(parse_url, json.dumps(cut), {"Content-Type": "application/json"})
         response = urllib2.urlopen(request_object)
         html_arr = json.loads(response.read())
-        print "GOT RESPONSE {0}".format(html_arr)
+        cur_c = cur_c + len(cut)
+        print "{0} / {1} reviews tagged".format(cur_c, total_c)
         noun_phrases.extend(html_arr)
+    print "Tagging done, mapping phrases to topics"
     if noun_phrases:
         for p in noun_phrases:
             phrases = extract_noun_phrases(p["phrase"])
