@@ -39,6 +39,8 @@
       this.resource('explore', {path: '/'}, function(){
       });
       this.resource('processing');
+      this.resource('propertyStatus', {path: 'status/:property_id'}, function(){
+      });
       this.resource('properties', {path: 'properties'}, function(){
       });
       this.resource('property', {path: 'property/:property_id'}, function(){
@@ -66,14 +68,20 @@
               self.controllerFor('exploreIndex').set('yelpUrl', "");
             }else{
               self.controllerFor('exploreIndex').set('badUrl', false);
-              self.transitionTo('processing', {queryParams: {property: resp["property_id"]}});
+              var propertyPromise = self.store.find('propertyStatus', resp["property_id"]);
+              propertyPromise.then(function(status){
+                self.transitionTo('propertyStatus', status);
+              });
             }
           });
         },
         loadProperty: function(property){
           this.controllerFor('exploreIndex').set('badUrl', false);
           this.controllerFor('exploreIndex').set('checking', false);
-          this.transitionTo('processing', {queryParams: {property: property.get('id')}});
+          var propertyPromise = this.store.find('propertyStatus', property.get('id'));
+          propertyPromise.then(function(status){
+            self.transitionTo('propertyStatus', status);
+          });
         }
       }
     });
@@ -86,6 +94,12 @@
         return this.store.findAll('propertyMeta');
       }.property(),
       actions: {},
+    });
+
+    Explore.PropertyStatusRoute = Em.Route.extend({
+    });
+
+    Explore.PropertyStatusController = Em.Controller.extend({
     });
 
     Explore.ProcessingRoute = Em.Route.extend({

@@ -15,7 +15,7 @@ def scrape_yelp_for_reviews(property_id):
 
 
 def analyze_reviews_for_topics(property_id):
-    prop = Property.objects.get(id=property_id
+    prop = Property.objects.get(id=property_id)
     docs = []
     for r in prop.reviews.all():
         docs.append({"text": r.text, "id": r.id})

@@ -86,7 +86,7 @@ class PropertyMetaView(View):
         return HttpResponse(json.dumps({"propertyMetas": dict_list}), content_type="application/json")
 
 
-class PropertyStatusesView(View):
+class PropertyStatusView(View):
 
     def get(self, request, property_id):
         """

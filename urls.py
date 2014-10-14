@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^explore/?$', AppLandingView.as_view()),
     url(r'^properties/?([0-9]+)?$', PropertiesView.as_view()),
     url(r'^propertyMetas/?([0-9]+)?$', PropertyMetasView.as_view()),
+    url(r'^status/?([0-9]+)?$', PropertyStatusView.as_view()),
     url(r'^propertyMeta/?$', PropertyMetaView.as_view()),
 )

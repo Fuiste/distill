@@ -10,6 +10,15 @@ $(function(){
     reviews: a('number')
   });
 
+  e.PropertyStatus = m.extend({
+    yelp: a('boolean'),
+    topics: a('boolean'),
+    ready: function(){
+      if(this.get('yelp') && this.get('topics')){ return true; }
+      else { return false; }
+    }.property('yelp', 'topics')
+  });
+
   e.Review = m.extend({
     text: a('string'),
     date: a('string'),
