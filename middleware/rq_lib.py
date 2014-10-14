@@ -6,6 +6,8 @@ import django_rq
 
 def scrape_yelp_for_reviews(property_id):
     prop = Property.objects.get(id=property_id)
+    prop.yelp_processing = True
+    prop.save()
     review_date_cutoff = 2011
     yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
     print "Starting Yelp spider."
@@ -21,6 +23,8 @@ def scrape_yelp_for_reviews(property_id):
 
 def analyze_reviews_for_topics(property_id):
     prop = Property.objects.get(id=property_id)
+    prop.topics_processing = True
+    prop.save()
     docs = []
     for r in prop.reviews.all():
         docs.append({"text": r.text, "id": r.id})

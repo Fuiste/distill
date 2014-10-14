@@ -98,6 +98,23 @@
     });
 
     Explore.PropertyStatusRoute = Em.Route.extend({
+      setupController: function(controller, model){
+        var self = this;
+        function recurse() {
+          model.reload().then(function(status){
+            console.log("UPDATED");
+            if(status.get('ready')){
+              var propertyPromise = self.store.find('property', status.get('id'));
+              propertyPromise.then(function(prop){
+                self.transitionTo('property.index', prop);
+              });
+            } else {
+              setTimeout(recurse, 5000);
+            }
+          });
+        }
+        setTimeout(recurse, 5000);
+      },
       actions: {
         openProperty: function(property){
           var self = this;
