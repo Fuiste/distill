@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^/?$', AppLandingView.as_view()),
     url(r'^explore/?$', AppLandingView.as_view()),
     url(r'^properties/?([0-9]+)?$', PropertiesView.as_view()),
     url(r'^propertyMetas/?([0-9]+)?$', PropertyMetasView.as_view()),
