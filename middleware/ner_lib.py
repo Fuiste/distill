@@ -8,6 +8,7 @@ import ner
 from nltk.tree import *
 import urllib
 import urllib2
+import json
 
 threading._DummyThread._Thread__stop = lambda x: 42
 
@@ -61,11 +62,25 @@ def pos_tag_text_documents(text_documents):
     doc_copy = []
     # maps noun phrases to their documents
     noun_phrase_map = {}
-    request_object = urllib2.Request(parse_url, formatted_text, {"Content-Type": "application/json"})
-    response = urllib2.urlopen(request_object)
-    html_string = response.read()
-    noun_phrases = html_string
-    print "GOT RESPONSE: " + html_string
+    formatted_cuts = []
+    for t in formatted_text:
+        if len(formatted_cuts):
+            found = False
+            for c in formatted_cuts:
+                if len(c) < 4:
+                    c.append(t)
+                    found = True
+            if not found:
+                formatted_cuts.append([t])
+        else:
+            formatted_cuts.append([t])
+    noun_phrases = []
+    for cut in formatted_cuts:
+        request_object = urllib2.Request(parse_url, json.dumps(cut), {"Content-Type": "application/json"})
+        response = urllib2.urlopen(request_object)
+        html_arr = json.loads(response.read())
+        print "GOT RESPONSE {0}".format(html_arr)
+        noun_phrases.extend(html_arr)
     if noun_phrases:
         for p in noun_phrases:
             phrases = extract_noun_phrases(p["phrase"])
