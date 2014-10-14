@@ -270,7 +270,7 @@
       {{#unless ready}}
       <h1 class="color-gray" style="margin-bottom:40px;"><strong class="color-orange">Fermenting!</strong> We're working on it!</h1>
       {{else}}
-      <h1 class="color-gray" style="margin-bottom:40px;"><strong class="color-orange">All done!</strong> Click the button below to get started!</h1>
+      <h1 class="color-gray" style="margin-bottom:40px;"><strong class="color-orange">All done!</strong> Redirecting you to our summary...</h1>
       {{/unless}}
       <div class="row special-prompt">
         <div class="col-sm-6">
@@ -286,15 +286,13 @@
       <h4 class="color-gray" style="margin-top:40px;">Leep this page open, we'll handle it from here.  This can take up to 10 minutes.</h4>
       {{/unless}}
     </div>
-    {{#if ready}}
-    <button class="btn btn-lg btn-warning" {{action 'openProperty' this}}>All done!</button>
-    {{else}}
+    {{#unless ready}}
     <div class="spinner" style="margin-top: 15px;">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
-    {{/if}}
+    {{/unless}}
   </div>
 </script>
 
