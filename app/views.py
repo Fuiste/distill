@@ -97,13 +97,14 @@ class PropertyStatusView(View):
 
         # If there's no reviews yet (initial GET) grab 'em
         if prop.yelp_scraped == False:
-            prop.reviews.all().delete()
-            django_rq.enqueue(scrape_yelp_for_reviews, prop.id)
+            if not prop.yelp_processing:
+                prop.reviews.all().delete()
+                django_rq.enqueue(scrape_yelp_for_reviews, prop.id)
 
-        # If there's no topics yet, build them (now using NOUNPHRASE).
-        if prop.topics_analyzed == False:
-            prop.topics.all().delete()
-            django_rq.enqueue(analyze_reviews_for_topics, prop.id)
+        if prop.yelp_scraped == True and prop.topics_analyzed == False:
+            if not prop.topics_processing:
+                prop.topics.all().delete()
+                django_rq.enqueue(analyze_reviews_for_topics, prop.id)
 
         return HttpResponse(json.dumps({"propertyStatuses": [prop.get_property_status_dict()]}), content_type="application/json")
 
@@ -111,7 +112,7 @@ class PropertyStatusView(View):
 
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
-        return super(PropertyStatusesView, self).dispatch(*args, **kwargs)
+        return super(PropertyStatusView, self).dispatch(*args, **kwargs)
 
 
 class PropertiesView(View):

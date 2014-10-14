@@ -39,7 +39,7 @@
       this.resource('explore', {path: '/'}, function(){
       });
       this.resource('processing');
-      this.resource('propertyStatus', {path: 'status/:property_id'}, function(){
+      this.resource('propertyStatus', {path: 'status/:propertyStatus_id'}, function(){
       });
       this.resource('properties', {path: 'properties'}, function(){
       });
@@ -76,6 +76,7 @@
           });
         },
         loadProperty: function(property){
+          var self = this;
           this.controllerFor('exploreIndex').set('badUrl', false);
           this.controllerFor('exploreIndex').set('checking', false);
           var propertyPromise = this.store.find('propertyStatus', property.get('id'));
@@ -97,6 +98,15 @@
     });
 
     Explore.PropertyStatusRoute = Em.Route.extend({
+      actions: {
+        openProperty: function(property){
+          var self = this;
+          var propertyPromise = self.store.find('property', property.get('id'));
+          propertyPromise.then(function(prop){
+            self.transitionTo('property.index', prop);
+          });
+        }
+      },
     });
 
     Explore.PropertyStatusController = Em.Controller.extend({

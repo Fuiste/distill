@@ -124,6 +124,7 @@ EXTERNAL_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
+    'django_rq',
     'tastypie',
 ]
 

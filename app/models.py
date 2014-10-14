@@ -38,10 +38,12 @@ class Property(models.Model):
     topics = models.ManyToManyField(Topic, null=True)
     yelp_url = models.URLField(null=True)
     yelp_scraped = models.BooleanField(default=False)
+    yelp_processing = models.BooleanField(default=False)
     topics_analyzed = models.BooleanField(default=False)
+    topics_processing = models.BooleanField(default=False)
 
     def get_property_status_dict(self):
-        return {"yelp": self.yelp_scraped, "topics": self.topics_scraped, "id": self.id}
+        return {"yelp": self.yelp_scraped, "topics": self.topics_analyzed, "id": self.id}
 
     def get_property_meta_dict(self):
         return {"name": self.name, "id": self.id, "reviews": len(self.reviews.all())}
