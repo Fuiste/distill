@@ -37,6 +37,8 @@ class Property(models.Model):
     reviews = models.ManyToManyField(Review, null=True)
     topics = models.ManyToManyField(Topic, null=True)
     yelp_url = models.URLField(null=True)
+    yelp_scraped = models.BooleanField(default=False)
+    topics_analyzed = models.BooleanField(default=False)
 
     def get_property_meta_dict(self):
         return {"name": self.name, "id": self.id, "reviews": len(self.reviews.all())}

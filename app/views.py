@@ -15,6 +15,7 @@ from middleware.yelpspider import YelpSpider
 from middleware.ner_lib import *
 import urllib2
 from BeautifulSoup import BeautifulSoup
+import django_rq
 
 
 # Create your views here.
@@ -95,6 +96,7 @@ class PropertiesView(View):
 
         # If there's no reviews yet (initial GET) grab 'em
         if len(prop.reviews.all()) == 0:
+            
             review_date_cutoff = 2011
             yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
             # print "Starting Yelp spider for {0}".format(prop.name)
