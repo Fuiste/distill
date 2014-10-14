@@ -6,14 +6,16 @@ import threading
 from middleware.text_format import replace_special_chars_in_text
 import ner
 from nltk.tree import *
+import urllib
+import urllib2
 
 threading._DummyThread._Thread__stop = lambda x: 42
 
 
-__author__ = "MDee"
+__author__ = "fuiste"
 
 middleware_dir = os.path.dirname(__file__)
-st = StanfordParser(middleware_dir + "/stanford_parser/stanford-parser.jar", middleware_dir + "/stanford_parser/stanford-models.jar")
+parse_url = "http://distill-server.herokuapp.com/parse"
 
 
 # Old noun phrase extraction method.
@@ -32,6 +34,7 @@ def extract_noun_phrases(pos_str):
 # Extract phrases from a parsed (chunked) tree
 # Phrase = tag for the string phrase (sub-tree) to extract
 # Returns: List of deep copies;  Recursive
+# Use regex to remove opening and closing parentheses
 def ExtractPhrases( myTree, phrase):
     myPhrases = []
     if (myTree.label() == phrase):
@@ -50,25 +53,26 @@ def ExtractPhrases( myTree, phrase):
 
 
 def pos_tag_text_documents(text_documents):
-    print middleware_dir + "/stanford_parser/stanford-parser.jar"
     formatted_text = []#replace_special_chars_in_text(text_documents=text_documents, lowercase=False)
     for doc in text_documents:
         sentences = re.split(r' *[\.\?!][\'"\)\]]* *', doc["text"])
-        for s in sentences:
-            formatted_text.append({"text": s.lower(), "review_id": doc["id"]})
+        formatted_text.append({"sentences": sentences, "id": doc["id"]})
     # tagger = ner.SocketNER(host='http://distill-server.herokuapp.com', port=8080)
     doc_copy = []
     # maps noun phrases to their documents
     noun_phrase_map = {}
-    for index, td in enumerate(formatted_text):
-        pos_str = st.raw_parse(td["text"])
-        if pos_str:
-            noun_phrases = ExtractPhrases(pos_str[0], 'NP')
-        if noun_phrases:
-            for p in noun_phrases:
-                if p not in noun_phrase_map:
-                    noun_phrase_map[p] = set()
-                noun_phrase_map[p].add(td["review_id"])
+    request_object = urllib2.Request(parse_url, formatted_text, {"Content-Type": "application/json"})
+    response = urllib2.urlopen(request_object)
+    html_string = response.read()
+    noun_phrases = html_string
+    print "GOT RESPONSE: " + html_string
+    if noun_phrases:
+        for p in noun_phrases:
+            phrases = extract_noun_phrases(p["phrase"])
+            for ph in phrases:
+                if ph not in noun_phrase_map:
+                    noun_phrase_map[ph] = set()
+                noun_phrase_map[ph].add(p["id"])
     noun_phrase_list =[]
     for noun_phrase, id_set in noun_phrase_map.iteritems():
         noun_phrase_list.append({"noun_phrase": noun_phrase, "ids": list(id_set)})
