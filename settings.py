@@ -50,8 +50,6 @@ ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'freesage.wsgi.application'
 
-print "WSGI GOOD"
-
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
@@ -65,8 +63,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-print "DATABASES GOOD"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -131,9 +127,24 @@ EXTERNAL_APPS = [
     'tastypie',
 ]
 
-print "APPS GOOD"
-
 INSTALLED_APPS = INTERNAL_APPS + EXTERNAL_APPS
+
+RQ_QUEUES = {
+    'default': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'), # If you're on Heroku
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'high': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'), # If you're on Heroku
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 500,
+    },
+    'low': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'), # If you're on Heroku
+        'DB': 0,
+    }
+}
 
 import dj_database_url
 
@@ -141,4 +152,3 @@ db_config =  dj_database_url.config()
 if db_config:
     DATABASES["default"] = db_config
 
-print "DJ_DATABASE_GOOD"
