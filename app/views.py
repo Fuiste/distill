@@ -97,14 +97,32 @@ class PropertyStatusView(View):
 
         # If there's no reviews yet (initial GET) grab 'em
         if prop.yelp_scraped == False:
-            if not prop.yelp_processing:
-                prop.reviews.all().delete()
-                django_rq.enqueue(scrape_yelp_for_reviews, prop.id)
+            url = 'http://10.80.80.75:8000/?'
+            jsondata = {"upstream_id": prop.id, "yelp_url": prop.yelp_url}
+            data = urllib.urlencode(jsondata)
+            req = urllib2.Request(url)
+            req.add_data(data)
+            response = urllib2.urlopen(req)
+            resp = json.loads(response.read())
+            if resp["yelp"] == False:
+                print "ezscrape isn't done yet..."
+            else:
+                prop.yelp_scraped = True
+                prop.save()
+                rev_list = []
+                for r in resp["reviews"]:
+                    rev_list.append(Review(text=r["text"], grade=r["grade"], date=datetime.datetime.fromtimestamp(r["timestamp"])))
+                for r in rev_list:
+                    r.save()
+                    prop.reviews.add(r)
+                prop.save()
+
 
         if prop.yelp_scraped == True and prop.topics_analyzed == False:
             if not prop.topics_processing:
-                prop.topics.all().delete()
-                django_rq.enqueue(analyze_reviews_for_topics, prop.id)
+                print "TOPICS TEMPORARILY DISABLED" 
+                #prop.topics.all().delete()
+                #django_rq.enqueue(analyze_reviews_for_topics, prop.id)
 
         return HttpResponse(json.dumps({"propertyStatuses": [prop.get_property_status_dict()]}), content_type="application/json")
 
