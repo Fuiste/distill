@@ -97,7 +97,8 @@ class PropertyStatusView(View):
 
         # If there's no reviews yet (initial GET) grab 'em
         if prop.yelp_scraped == False:
-            url = 'http://party.webmdee.com/scrape/?'
+            #url = 'http://party.webmdee.com/scrape/?'
+            url = 'http://10.80.80.75:8000/scrape/?'
             jsondata = {"upstream_id": prop.id, "yelp_url": prop.yelp_url}
             data = urllib.urlencode(jsondata)
             req = urllib2.Request(url)
@@ -120,7 +121,8 @@ class PropertyStatusView(View):
 
 
         if prop.yelp_scraped == True and prop.topics_analyzed == False:
-            url = 'http://party.webmdee.com/tag/?'
+            #url = 'http://party.webmdee.com/tag/?'
+            url = 'http://10.80.80.75:8000/tag/?'
             jsondata = {"upstream_id": prop.id}
             data = urllib.urlencode(jsondata)
             req = urllib2.Request(url)
