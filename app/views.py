@@ -112,7 +112,7 @@ class PropertyStatusView(View):
                 prop.save()
                 rev_list = []
                 for r in resp["reviews"]:
-                    rev_list.append(Review(text=r["text"], grade=r["grade"], created_date=datetime.datetime.fromtimestamp(r["timestamp"])))
+                    rev_list.append(Review(text=r["text"], grade=r["grade"], id=r["id"], created_date=datetime.datetime.fromtimestamp(r["timestamp"])))
                 for r in rev_list:
                     r.save()
                     prop.reviews.add(r)
@@ -139,11 +139,9 @@ class PropertyStatusView(View):
                     new_topic.save()
                     revs = []
                     for r in t["reviews"]:
-                        rl = Review.objects.filter(text=r)
-                        revs.extend(rl)
-                    for r in revs:
-                        new_topic.reviews.add(r)
+                        new_topic.reviews.add(Review.objects.get(id=r))
                     new_topic.save()
+                    topic_list.append(new_topic)
                 for t in topic_list:
                     t.save()
                     prop.topics.add(t)
