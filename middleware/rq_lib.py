@@ -1,24 +1,6 @@
-from middleware.yelpspider import YelpSpider
 from middleware.ner_lib import *
 from app.models import *
 import django_rq
-
-
-def scrape_yelp_for_reviews(property_id):
-    prop = Property.objects.get(id=property_id)
-    prop.yelp_processing = True
-    prop.save()
-    review_date_cutoff = 2011
-    yelp_spider = YelpSpider(url=prop.yelp_url, property_id=prop.id, provider_name="Yelp", review_date_cutoff=review_date_cutoff)
-    print "Starting Yelp spider."
-    yelp_spider.start()
-    print "YELP DONE"
-    prop.yelp_scraped = True
-    prop.save()
-    # If there's no topics yet, build them (now using NOUNPHRASE).
-    if prop.topics_analyzed == False:
-        prop.topics.all().delete()
-        django_rq.enqueue(analyze_reviews_for_topics, prop.id)
 
 
 def analyze_reviews_for_topics(property_id):
