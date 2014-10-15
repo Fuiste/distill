@@ -274,8 +274,8 @@
       {{/unless}}
       <div class="row special-prompt">
         <div class="col-sm-6">
-          <h4 class="color-gray">Review scraping status:</h4>
-          <h4 class="color-gray">{{#if yelp}}<strong class="color-orange">Done!</strong>{{else}}<strong>Processing...</strong>{{/if}}</h4>
+          <h4 class="color-gray">Online reviews:</h4>
+          <h4 class="color-gray">{{#if yelp}}<strong class="color-orange">Done!</strong>{{else}}<strong>Reading...</strong>{{/if}}</h4>
         </div>
         <div class="col-sm-6">
           <h4 class="color-gray">Topic analysis status:</h4>
@@ -283,7 +283,7 @@
         </div>
       </div>
       {{#unless ready}}
-      <h4 class="color-gray" style="margin-top:40px;">Leep this page open, we'll handle it from here.  This can take up to 10 minutes.</h4>
+      <h4 class="color-gray" style="margin-top:40px;">Keep this page open, we'll handle it from here.  This can take up to 10 minutes.</h4>
       {{/unless}}
     </div>
     {{#unless ready}}
