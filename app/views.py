@@ -95,11 +95,6 @@ class PropertyStatusView(View):
         # Grab property
         prop = Property.objects.get(id=property_id)
 
-        if len(prop.reviews.all()) == 0:
-            prop.yelp_scraped = False
-            prop.yelp_processing = False
-            prop.save()
-
         # If there's no reviews yet (initial GET) grab 'em
         if prop.yelp_scraped == False:
             url = 'http://10.80.80.75:8000/scrape/?'
@@ -110,7 +105,7 @@ class PropertyStatusView(View):
             response = urllib2.urlopen(req)
             resp = json.loads(response.read())
             if resp["done"] == False:
-                print "ezscrape isn't done yet..."
+                print "ezscrape isn't done scraping yet..."
             else:
                 print "ezscrape found {0} reviews!".format(len(resp["reviews"]))
                 prop.yelp_scraped = True
@@ -125,10 +120,34 @@ class PropertyStatusView(View):
 
 
         if prop.yelp_scraped == True and prop.topics_analyzed == False:
-            if not prop.topics_processing:
-                print "TOPICS TEMPORARILY DISABLED" 
-                prop.topics.all().delete()
-                django_rq.enqueue(analyze_reviews_for_topics, prop.id)
+            url = 'http://10.80.80.75:8000/tag/?'
+            jsondata = {"upstream_id": prop.id}
+            data = urllib.urlencode(jsondata)
+            req = urllib2.Request(url)
+            req.add_data(data)
+            response = urllib2.urlopen(req)
+            resp = json.loads(response.read())
+            if resp["done"] == False:
+                print "ezscrape isn't done tagging yet..."
+            else:
+                print "ezscrape found {0} topics!".format(len(resp["topics"]))
+                prop.topics_analyzed = True
+                prop.save()
+                topic_list = []
+                for t in resp["topics"]:
+                    new_topic = Topic(name=t["name"])
+                    new_topic.save()
+                    revs = []
+                    for r in t["reviews"]:
+                        rl = Review.objects.filter(text=r)
+                        revs.extend(rl)
+                    for r in revs:
+                        new_topic.reviews.add(r)
+                    new_topic.save()
+                for t in topic_list:
+                    t.save()
+                    prop.topics.add(t)
+                prop.save()
 
         return HttpResponse(json.dumps({"propertyStatuses": [prop.get_property_status_dict()]}), content_type="application/json")
 
