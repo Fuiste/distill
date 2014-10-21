@@ -10,8 +10,6 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from app.models import *
-from middleware.ner_lib import *
-from middleware.rq_lib import *
 import urllib2
 from BeautifulSoup import BeautifulSoup
 import django_rq
@@ -98,7 +96,6 @@ class PropertyStatusView(View):
         # If there's no reviews yet (initial GET) grab 'em
         if prop.yelp_scraped == False:
             url = 'http://party.webmdee.com/scrape/?'
-            #url = 'http://10.80.80.75:8000/scrape/?'
             jsondata = {"upstream_id": prop.id, "yelp_url": prop.yelp_url}
             data = urllib.urlencode(jsondata)
             req = urllib2.Request(url)
@@ -122,7 +119,6 @@ class PropertyStatusView(View):
 
         if prop.yelp_scraped == True and prop.topics_analyzed == False:
             url = 'http://party.webmdee.com/tag/?'
-            #url = 'http://10.80.80.75:8000/tag/?'
             jsondata = {"upstream_id": prop.id}
             data = urllib.urlencode(jsondata)
             req = urllib2.Request(url)
@@ -151,7 +147,6 @@ class PropertyStatusView(View):
 
         return HttpResponse(json.dumps({"propertyStatuses": [prop.get_property_status_dict()]}), content_type="application/json")
 
-        # return HttpResponse(json.dumps({"properties": [prop.get_ember_dict()], "reviews": prop.get_all_review_dicts_for_ember(), "topics": prop.get_all_topic_dicts_for_ember()}), content_type="application/json")
 
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
