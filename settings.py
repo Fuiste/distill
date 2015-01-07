@@ -22,7 +22,9 @@ PROJECT_ROOT = os.path.dirname(__file__)
 SECRET_KEY = 'viu53jj296c1n)@^+!otd^lm!n&af20m5w$_oxe*(1k*alt424'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', True)
+# DEBUG = os.environ.get('DJANGO_DEBUG', True)
+DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['*']
