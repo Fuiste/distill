@@ -106,20 +106,22 @@
             if(status.get('ready')){
               var propertyPromise = self.store.find('property', status.get('id'));
               propertyPromise.then(function(prop){
+                $("html, body").animate({ scrollTop: 0 }, "slow");
                 self.transitionTo('property.index', prop);
               });
             } else {
-              setTimeout(recurse, 5000);
+              setTimeout(recurse, 3000);
             }
           });
         }
-        setTimeout(recurse, 5000);
+        setTimeout(recurse, 3000);
       },
       actions: {
         openProperty: function(property){
           var self = this;
           var propertyPromise = self.store.find('property', property.get('id'));
           propertyPromise.then(function(prop){
+            $("html, body").animate({ scrollTop: 0 }, "slow");
             self.transitionTo('property.index', prop);
           });
         }
